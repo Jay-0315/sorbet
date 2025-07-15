@@ -1,13 +1,13 @@
-package com.sorbet;
+package com.sorbet.consulting;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class SorbetApplication {
+public class ConsultingApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(SorbetApplication.class, args);
+        SpringApplication.run(ConsultingApplication.class, args);
     }
 
 }

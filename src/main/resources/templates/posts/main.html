@@ -1,0 +1,57 @@
+//게시판 메인 페이지
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>Sorbet 게시판</title>
+    <style>
+        body {
+            font-family: '굴림', sans-serif;
+            background-color: #f2f2f2;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 {
+            color: #6600cc;
+        }
+        .post-box {
+            background-color: white;
+            border: 1px solid #ccc;
+            padding: 12px;
+            margin-bottom: 10px;
+        }
+        .category {
+            font-size: 13px;
+            color: #888;
+        }
+        a {
+            text-decoration: none;
+            color: #0000cc;
+        }
+        .btn-write {
+            background-color: #ccf;
+            padding: 8px 14px;
+            font-weight: bold;
+            border: 1px solid #999;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+<h1>Sorbet 상담 게시판</h1>
+
+<div>
+    <a href="/posts/new" class="btn-write">글쓰기</a>
+</div>
+
+<hr/>
+
+<div th:each="post : ${posts}" class="post-box">
+    <div class="category" th:text="${post.category}">카테고리</div>
+    <div>
+        <a th:href="@{|/posts/${post.id}|}" th:text="${post.title}">제목</a>
+    </div>
+</div>
+</body>
+</html>
