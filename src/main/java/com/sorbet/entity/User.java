@@ -1,4 +1,5 @@
-package com.sorbet.domain;
+package com.sorbet.entity;
+import com.sorbet.domain.UserLevel;
 import jakarta.persistence.*;
 import lombok.*;
 

@@ -1,6 +1,6 @@
 package com.sorbet.repository;
 
-import com.sorbet.domain.User;
+import com.sorbet.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

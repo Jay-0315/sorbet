@@ -1,0 +1,16 @@
+<!-- templates/home.html -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>홈</title>
+</head>
+<body>
+<h1>환영합니다, Sorbet!</h1>
+<p>로그인에 성공했습니다 🎉</p>
+
+<form th:action="@{/logout}" method="post">
+  <button type="submit">로그아웃</button>
+</form>
+</body>
+</html>
