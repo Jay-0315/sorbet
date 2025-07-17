@@ -1,13 +1,11 @@
-// com.sorbet.controller.UserController.java
 package com.sorbet.controller;
 
 import com.sorbet.entity.User;
 import com.sorbet.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
 @Controller
@@ -21,16 +19,28 @@ public class UserController {
         return "login";
     }
 
+    // 로그아웃 폼
+    @GetMapping("/logout")
+    public String logout() {
+        return "login";
+    }
+
     // 회원가입 폼
     @GetMapping("/register")
-    public String registerForm() {
+    public String registerForm(Model model) {
+        model.addAttribute("member", new User());
         return "register";
     }
 
     // 회원가입 처리
     @PostMapping("/register")
-    public String register(@RequestParam String username, @RequestParam String password) {
-        userService.register(username, password);  // ✅ 수정된 부분!
-        return "redirect:/login";
+    public String register(@ModelAttribute("member") User user, Model model) {
+        try {
+            userService.join(user);  // 🔧 정적 호출 → 인스턴스 호출로 수정
+            return "redirect:/login";
+        } catch (IllegalStateException e) {
+            model.addAttribute("errorMessage", e.getMessage());
+            return "register";
+        }
     }
 }
