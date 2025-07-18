@@ -1,0 +1,150 @@
+body {
+    font-family: 'Segoe UI', 'Malgun Gothic', 'Apple SD Gothic Neo', 'Nanum Gothic', sans-serif;
+    background-color: #F8F8F8; /* Very light grey background */
+    color: #333333;
+    margin: 0;
+    padding: 0;
+    line-height: 1.6;
+}
+
+.container {
+    max-width: 1000px; /* Wider container */
+    margin: 30px auto; /* More vertical margin */
+    padding: 30px; /* More padding inside */
+    background-color: #FFFFFF; /* White background for content */
+    border-radius: 12px; /* More rounded corners */
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08); /* Stronger, softer shadow */
+}
+
+h1, h2, h3, h4, h5, h6 {
+    color: #4CAF50; /* Accent color for headings (Green) */
+    margin-top: 0;
+    margin-bottom: 25px; /* More space below headings */
+    font-weight: 600;
+}
+
+.post-box {
+    background-color: #FFFFFF;
+    border: 1px solid #E0E0E0;
+    padding: 20px;
+    margin-bottom: 15px;
+    border-radius: 8px; /* Slightly more rounded */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); /* Subtle shadow for cards */
+    transition: transform 0.2s ease-in-out;
+}
+
+.post-box:hover {
+    transform: translateY(-3px); /* Lift effect on hover */
+}
+
+.category {
+    font-size: 0.85em;
+    color: #777;
+    margin-bottom: 8px;
+    font-weight: 500;
+}
+
+a {
+    text-decoration: none;
+    color: #4CAF50; /* Accent color for links (Green) */
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+.btn-write, .btn-submit, .btn-back {
+    display: inline-block;
+    background-color: #4CAF50; /* Accent color for buttons (Green) */
+    color: #ffffff;
+    padding: 12px 25px; /* Larger buttons */
+    font-weight: bold;
+    border: none;
+    border-radius: 8px; /* More rounded buttons */
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    text-align: center;
+    font-size: 1em;
+}
+
+.btn-write:hover, .btn-submit:hover, .btn-back:hover {
+    background-color: #388E3C;
+    transform: translateY(-1px);
+}
+
+input[type="text"], textarea {
+    width: calc(100% - 24px); /* Adjust for padding and border */
+    padding: 12px;
+    margin-bottom: 15px;
+    border: 1px solid #E0E0E0;
+    background-color: #FDFDFD;
+    color: #333333;
+    border-radius: 6px;
+    font-size: 1em;
+    word-break: break-word; /* Allow words to break to prevent overflow */
+    white-space: pre-wrap; /* Preserve whitespace and wrap text */
+}
+
+input[type="text"]:focus, textarea:focus {
+    border-color: #4CAF50;
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.2);
+}
+
+hr {
+    border: 0;
+    height: 1px;
+    background-color: #EEEEEE;
+    margin: 30px 0;
+}
+
+.navbar {
+    background-color: #FFFFFF; /* White background for navbar */
+    padding: 15px 0; /* More padding */
+    margin-bottom: 30px; /* More space below navbar */
+    text-align: center;
+    border-radius: 12px; /* Consistent rounding */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05); /* Subtle shadow */
+}
+
+.nav-btn {
+    display: inline-block;
+    padding: 10px 20px; /* More padding */
+    margin: 0 8px; /* More margin */
+    background-color: #F0F0F0; /* Lighter grey for nav buttons */
+    color: #555555;
+    border-radius: 20px; /* Pill shape */
+    transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease;
+    font-weight: 500;
+}
+
+.nav-btn:hover {
+    background-color: #E0E0E0; /* Darker grey on hover */
+    color: #333333;
+    text-decoration: none;
+    transform: translateY(-1px);
+}
+
+.nav-btn.active {
+    background-color: #4CAF50; /* Active green */
+    color: #FFFFFF;
+    box-shadow: 0 2px 8px rgba(76, 175, 80, 0.3);
+}
+
+.tags {
+    margin-top: 15px;
+    font-size: 0.9em;
+    color: #999;
+}
+
+.tag {
+    background-color: #E8F5E9; /* Light green background */
+    border: 1px solid #A5D6A7; /* Green border */
+    padding: 4px 10px; /* Adjusted padding */
+    margin-right: 6px;
+    display: inline-block;
+    font-size: 0.8em; /* Adjusted font size */
+    border-radius: 15px; /* More rounded for pill shape */
+    color: #388E3C;
+    font-weight: 500;
+}

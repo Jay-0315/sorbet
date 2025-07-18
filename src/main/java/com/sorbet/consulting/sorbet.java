@@ -4,10 +4,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class ConsultingApplication {
+public class sorbet {
 
     public static void main(String[] args) {
-        SpringApplication.run(ConsultingApplication.class, args);
+        SpringApplication.run(sorbet.class, args);
     }
 
 }
