@@ -1,10 +1,36 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
   <meta charset="UTF-8">
-  <title>$Title$</title>
+  <title>글쓰기 - Sorbet 게시판</title>
+  <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
-$END$
+<div class="container">
+  <h1>글 작성</h1>
+
+  <!-- GET 방식으로 view.html로 이동 -->
+  <form action="/view.html" method="get">
+    <label for="title">제목</label>
+    <input type="text" id="title" name="title" required />
+
+    <label for="content">내용</label>
+    <textarea id="content" name="content" rows="6" required></textarea>
+
+    <label for="category">카테고리</label>
+    <input type="text" id="category" name="category" placeholder="예: 연애, 사주, 인생" />
+
+    <label for="writer">작성자 닉네임</label>
+    <input type="text" id="writer" name="writer" required />
+
+    <label for="consultant">상담사 ID</label>
+    <input type="text" id="consultant" name="consultant" required />
+
+    <label for="tags">태그 (쉼표로 구분)</label>
+    <input type="text" id="tags" name="tags" placeholder="연애, 친구, 사주 등" />
+
+    <button type="submit" class="btn-submit">등록하기</button>
+  </form>
+</div>
 </body>
 </html>

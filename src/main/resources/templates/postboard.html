@@ -1,10 +1,174 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+    <meta charset="UTF-8">
+    <title>Sorbet 게시판</title>
+    <style>
+        body {
+            font-family: '맑은 고딕', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #ffffff;
+        }
+
+        /* 네비게이션 바 */
+        .nav-top {
+            background-color: #f9f9f9;
+            padding: 10px 20px;
+            border-bottom: 1px solid #ccc;
+            text-align: right;
+        }
+
+        .nav-top a {
+            margin-left: 20px;
+            text-decoration: none;
+            color: #444;
+            font-size: 14px;
+        }
+
+        .sorbet-logo {
+            text-align: center;
+            font-size: 40px;
+            font-weight: bold;
+            color: #E4A545;
+            margin-top: 20px;
+        }
+
+        .category-title {
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+            color: #444;
+            margin-top: 5px;
+            margin-bottom: 20px;
+        }
+
+        .outer-container {
+            max-width: 900px;
+            margin: 0 auto;
+            border: 1px solid #000;
+            border-radius: 12px;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 30px;
+        }
+
+        .nav-btn {
+            padding: 8px 16px;
+            font-size: 13px;
+            border: 1px solid #aaa;
+            border-radius: 30px;
+            background-color: #f0f0f0;
+            color: #333;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        .nav-btn.active {
+            background-color: #F6CAC9;
+            border-color: #F6CAC9;
+            color: #000;
+            font-weight: bold;
+            transform: scale(1.1);
+        }
+
+        .container {
+            padding: 10px;
+        }
+
+        .post-box {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            padding: 20px;
+            margin-bottom: 16px;
+            border-radius: 8px;
+            min-height: 100px;
+        }
+
+        .category {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 8px;
+        }
+
+        .post-box a {
+            font-size: 18px;
+            color: #222;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .btn-write {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #E4A545;
+            padding: 12px 18px;
+            font-weight: bold;
+            border: none;
+            border-radius: 6px;
+            text-decoration: none;
+            color: white;
+            box-shadow: 2px 2px 6px rgba(0,0,0,0.2);
+        }
+    </style>
 </head>
 <body>
-$END$
+
+<!-- 네비게이션 바 -->
+<div class="nav-top">
+    <a href="/">홈</a>
+    <a href="/about">소개</a>
+    <a href="/login">로그인</a>
+</div>
+
+<!-- 로고 + 제목 -->
+<div class="sorbet-logo">Sorbet</div>
+<div class="category-title">상담 게시판</div>
+
+<!-- 테두리 박스 -->
+<div class="outer-container">
+    <!-- 태그 버튼 -->
+    <div class="navbar">
+        <button class="nav-btn" data-category="love">연애</button>
+        <button class="nav-btn" data-category="friend">친구</button>
+        <button class="nav-btn" data-category="saju">사주</button>
+        <button class="nav-btn" data-category="life">인생</button>
+        <button class="nav-btn" data-category="etc">기타</button>
+    </div>
+
+    <!-- 글 목록 -->
+    <div class="container">
+        <div th:each="post : ${posts}" class="post-box">
+            <div class="category" th:text="${post.category}">카테고리</div>
+            <a th:href="@{|/posts/${post.id}|}" th:text="${post.title}">제목</a>
+        </div>
+    </div>
+</div>
+
+<!-- 글쓰기 버튼 -->
+<a href="/create" class="btn-write">글쓰기</a>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const navButtons = document.querySelectorAll('.nav-btn');
+
+        navButtons.forEach(button => {
+            button.addEventListener('click', function () {
+                navButtons.forEach(btn => btn.classList.remove('active'));
+                this.classList.add('active');
+                const category = this.dataset.category;
+                console.log('Category clicked:', category);
+            });
+        });
+    });
+</script>
 </body>
 </html>

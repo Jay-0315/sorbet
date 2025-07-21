@@ -10,7 +10,7 @@ public class UserValidation {
 
     private final UserRepository userRepository;
 
-    public boolean existsByUsername(String username) {
-        return userRepository.existsByUsername(username);
+    public boolean existsByUserId(String userId) {
+        return userRepository.existsByUserId(userId);
     }
 }

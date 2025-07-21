@@ -4,30 +4,41 @@
 <head>
   <meta charset="UTF-8">
   <title>회원가입</title>
+  <link rel="stylesheet" type="text/css" href="/css/register.css">
 </head>
 <body>
-<h2>회원가입</h2>
+<div class="container">
+  <h2>회원가입</h2>
 
-<!-- 에러 메시지 표시 -->
-<div th:if="${errorMessage}" style="color:red;">
-  <p th:text="${errorMessage}"></p>
+  <!-- 에러 메시지 표시 -->
+  <div th:if="${errorMessage}" class="error-box">
+    <p th:text="${errorMessage}"></p>
+  </div>
+
+  <!-- 회원가입 폼 -->
+  <form th:action="@{/register}" th:object="${member}" method="post">
+    <div>
+      <label for="userid">아이디 :</label>
+      <input type="text" id="userid" th:field="*{userId}">
+    </div>
+    <div>
+      <label for="password">비밀번호:</label>
+      <input type="password" id="password" th:field="*{password}">
+    </div>
+    <div>
+      <label for="email">이메일 :</label>
+      <input type="text" id="email" th:field="*{email}">
+    </div>
+    <div>
+      <label for="nickname">닉네임 :</label>
+      <input type="text" id="nickname" th:field="*{nickname}">
+    </div>
+    <div>
+      <button type="submit">가입하기</button>
+    </div>
+  </form>
+
+  <p><a th:href="@{/login}">로그인</a> 하러 가기</p>
 </div>
-
-<!-- 회원가입 폼 -->
-<form th:action="@{/register}" th:object="${member}" method="post">
-  <div>
-    <label for="username">아이디:</label>
-    <input type="text" id="username" th:field="*{username}">
-  </div>
-  <div>
-    <label for="password">비밀번호:</label>
-    <input type="password" id="password" th:field="*{password}">
-  </div>
-  <div>
-    <button type="submit">가입하기</button>
-  </div>
-</form>
-
-<p><a th:href="@{/login}">로그인</a> 하러 가기</p>
 </body>
 </html>

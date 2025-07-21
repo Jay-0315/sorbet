@@ -1,16 +1,68 @@
-<!-- templates/home.html -->
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      lang="ko">
+
 <head>
   <meta charset="UTF-8">
-  <title>홈</title>
+  <title>홈 | Sorbet</title>
+  <link rel="stylesheet" href="/css/home.css">
 </head>
 <body>
-<h1>환영합니다, Sorbet!</h1>
-<p>로그인에 성공했습니다 🎉</p>
+<div class="nav-top">
+  <a href="/">홈</a>
+  <a href="/about">소개</a>
+  <sec:authorize access="isAnonymous()">
+    <a href="/login">로그인</a>
+    <a href="/register">회원가입</a>
+  </sec:authorize>
+  <sec:authorize access="isAuthenticated()">
+    <a href="/mypage">마이페이지</a>
+    <form th:action="@{/logout}" method="post" style="display:inline">
+      <button type="submit">로그아웃</button>
+    </form>
+  </sec:authorize>
+</div>
 
-<form th:action="@{/logout}" method="post">
-  <button type="submit">로그아웃</button>
-</form>
+<div class="container">
+  <div class="sorbet-logo">Sorbet</div>
+  <h1>뭐든지 묻고, 답하세요 Sorbet, Solve at</h1>
+
+  <sec:authorize access="isAuthenticated()">
+    <p th:if="${nickname}" th:text="'안녕하세요, ' + ${nickname} + '님!'" style="text-align:center"></p>
+  </sec:authorize>
+
+  <div class="category-title">상담 게시판</div>
+  <div class="navbar">
+    <button class="nav-btn" data-category="love">연애</button>
+    <button class="nav-btn" data-category="friend">친구</button>
+    <button class="nav-btn" data-category="saju">사주</button>
+    <button class="nav-btn" data-category="life">인생</button>
+    <button class="nav-btn" data-category="etc">기타</button>
+  </div>
+
+  <div>
+    <div th:each="post : ${posts}" class="post-box">
+      <div class="category" th:text="${post.category}">카테고리</div>
+      <a th:href="@{|/posts/${post.id}|}" th:text="${post.title}">제목</a>
+    </div>
+  </div>
+
+  <a href="/create" class="btn-write">글쓰기</a>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const navButtons = document.querySelectorAll('.nav-btn');
+    navButtons.forEach(button => {
+      button.addEventListener('click', function () {
+        navButtons.forEach(btn => btn.classList.remove('active'));
+        this.classList.add('active');
+        const category = this.dataset.category;
+        console.log('Category clicked:', category);
+      });
+    });
+  });
+</script>
 </body>
 </html>

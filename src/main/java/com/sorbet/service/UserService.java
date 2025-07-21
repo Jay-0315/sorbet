@@ -1,5 +1,8 @@
+// src/main/java/com/sorbet/service/UserService.java
 package com.sorbet.service;
 
+import com.sorbet.domain.UserLevel;
+import com.sorbet.dto.UserRegisterDto;
 import com.sorbet.entity.User;
 import com.sorbet.repository.UserRepository;
 import com.sorbet.repository.UserValidation;
@@ -13,27 +16,27 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-    private final UserValidation userValidation; // 필드명 일치시킴
+    private final UserValidation userValidation;
 
-    public User register(String username, String rawPassword) {
-        String encoded = passwordEncoder.encode(rawPassword);
-        User user = User.builder()
-                .username(username)
-                .password(encoded)
-                .build();
-        return userRepository.save(user);
-    }
-
-    public User findByUsername(String username) {
-        return userRepository.findByUsername(username).orElse(null);
-    }
-
-    public Long join(User user) {
-        if (userValidation.existsByUsername(user.getUsername())) { // 인스턴스 메서드 호출로 변경
+    // ✅ DTO 기반 회원가입
+    public Long join(UserRegisterDto dto) {
+        if (userValidation.existsByUserId(dto.getUserId())) {
             throw new IllegalStateException("이미 존재하는 아이디입니다.");
         }
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+
+        User user = User.builder()
+                .userId(dto.getUserId())
+                .password(passwordEncoder.encode(dto.getPassword()))
+                .nickname(dto.getNickname())
+                .email(dto.getEmail())
+                .level(UserLevel.PLAIN)
+                .build();
+
         return userRepository.save(user).getId();
     }
-}
 
+    // 기타 유저 조회 로직
+    public User findByUserId(String userId) {
+        return userRepository.findByUserId(userId).orElse(null);
+    }
+}
