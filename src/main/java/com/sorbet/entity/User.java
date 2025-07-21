@@ -20,10 +20,17 @@ public class User implements UserDetails {
     private Long id;
 
     @Column(unique = true, nullable = false)
-    private String username;
+    private String userId;
 
     @Column(nullable = false)
     private String password;
+
+    @Column(unique = true, nullable = false)
+    private String nickname;
+
+    @Column(unique = true, nullable = false)
+    private String email;
+
 
     private int point = 0;
 
@@ -59,5 +66,10 @@ public class User implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    @Override
+    public String getUsername() {
+        return userId;
     }
 }

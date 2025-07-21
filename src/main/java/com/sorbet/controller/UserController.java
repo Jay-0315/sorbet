@@ -1,6 +1,6 @@
 package com.sorbet.controller;
 
-import com.sorbet.entity.User;
+import com.sorbet.dto.UserRegisterDto;
 import com.sorbet.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -28,15 +28,15 @@ public class UserController {
     // 회원가입 폼
     @GetMapping("/register")
     public String registerForm(Model model) {
-        model.addAttribute("member", new User());
+        model.addAttribute("member", new UserRegisterDto()); // 💡 DTO로 변경
         return "register";
     }
 
     // 회원가입 처리
     @PostMapping("/register")
-    public String register(@ModelAttribute("member") User user, Model model) {
+    public String register(@ModelAttribute("member") UserRegisterDto dto, Model model) {
         try {
-            userService.join(user);  // 🔧 정적 호출 → 인스턴스 호출로 수정
+            userService.join(dto); // 💡 엔티티가 아닌 DTO 사용
             return "redirect:/login";
         } catch (IllegalStateException e) {
             model.addAttribute("errorMessage", e.getMessage());

@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>글 보기 - Sorbet 게시판</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 40px;
+      background-color: #fff;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: auto;
+    }
+
+    .tag {
+      display: inline-block;
+      background-color: #eee;
+      color: #333;
+      font-size: 12px;
+      padding: 2px 6px;
+      border-radius: 4px;
+      margin-right: 4px;
+      margin-bottom: 8px;
+    }
+
+    .tags-top {
+      font-size: 12px;
+      color: #777;
+      margin-bottom: 5px;
+    }
+
+    h1 {
+      color: #000; /* 제목 검정색 */
+      font-size: 28px;
+      margin-top: 10px;
+      margin-bottom: 40px; /* 본문과의 여백 2배 */
+    }
+
+    .meta {
+      margin-bottom: 20px;
+      color: #555;
+    }
+
+    .content {
+      white-space: pre-wrap;
+      margin-bottom: 40px;
+    }
+
+    .comment-box {
+      margin-top: 40px;
+    }
+
+    textarea {
+      width: 100%;
+      padding: 10px;
+      font-size: 14px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+
+    .btn-submit {
+      margin-top: 10px;
+      padding: 8px 16px;
+      background-color: #333;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .btn-submit:hover {
+      background-color: #555;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <div class="tags-top" id="tags"></div>
+  <h1 id="title">제목</h1>
+
+  <div class="meta">
+    작성자: <span id="writer">작성자</span> |
+    상담사: <span id="consultant">상담사</span> |
+    카테고리: <span id="category">카테고리</span>
+  </div>
+
+  <div class="content" id="content">본문 내용</div>
+
+  <!-- 댓글창 추가 -->
+  <div class="comment-box">
+    <h3>댓글</h3>
+    <textarea rows="4" placeholder="댓글을 입력하세요..."></textarea>
+    <button class="btn-submit">댓글 등록</button>
+  </div>
+</div>
+
+<script>
+  window.addEventListener("DOMContentLoaded", () => {
+    const params = new URLSearchParams(window.location.search);
+
+    const title = params.get("title");
+    const writer = params.get("writer");
+    const consultant = params.get("consultant");
+    const category = params.get("category");
+    const content = params.get("content");
+    const tags = params.get("tags");
+
+    if (title) document.getElementById("title").textContent = title;
+    if (writer) document.getElementById("writer").textContent = writer;
+    if (consultant) document.getElementById("consultant").textContent = consultant;
+    if (category) document.getElementById("category").textContent = category;
+    if (content) document.getElementById("content").textContent = content;
+
+    const tagsElement = document.getElementById("tags");
+    if (tags) {
+      tags.split(",").forEach(tag => {
+        const span = document.createElement("span");
+        span.className = "tag";
+        span.textContent = tag.trim();
+        tagsElement.appendChild(span);
+      });
+    }
+  });
+</script>
+</body>
+</html>

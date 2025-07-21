@@ -1,0 +1,16 @@
+<!-- templates/mypage.html -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>마이페이지</title>
+</head>
+<body>
+<h1 th:text="'안녕하세요, ' + ${user.nickname} + '님!'"></h1>
+<p>이메일: <span th:text="${user.email}"></span></p>
+<p>포인트: <span th:text="${user.point}"></span></p>
+<p>등급: <span th:text="${user.level}"></span></p>
+<p>활동 기록 (게시글 수): <span th:text="${user.postCount}"></span></p>
+
+<a href="/home">홈으로</a>
+</body>
+</html>
