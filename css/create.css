@@ -1,0 +1,108 @@
+/* common.css 또는 create.css */
+
+/* .container, .page-title, label 등의 기본 스타일은 그대로 유지됩니다. */
+
+.form-box input[type="text"] {
+    width: 100%;
+    padding: 18px 12px; /* 제목 글박스 세로 패딩을 0.5배 키움 (12px -> 18px) */
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    background-color: #fdfdfd;
+    font-size: 16px; /* 글자 크기도 약간 키울 수 있음 */
+}
+
+.form-box textarea {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    background-color: #fdfdfd;
+    font-size: 14px;
+    resize: none; /* 내용 textarea: 크기조절 불가 (기존 설정 유지) */
+    overflow-y: auto; /* 내용이 넘칠 때 스크롤 (기존 설정 유지) */
+    height: 150px; /* 고정 높이 (기존 설정 유지) */
+}
+
+/* 태그 선택 박스 (커스텀 드롭다운) */
+.custom-select-wrapper {
+    position: relative;
+    display: block;
+    width: 20%;
+    margin-bottom: 20px;
+}
+
+.selected-tags-display {
+    border: 1px solid #ccc;
+    padding: 12px;
+    cursor: pointer;
+    min-height: 40px;
+    background-color: #fdfdfd;
+    border-radius: 6px;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+}
+
+.options-container {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    border: 1px solid #ccc;
+    background-color: #fff;
+    z-index: 1000;
+    max-height: 200px;
+    overflow-y: auto;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    border-radius: 6px;
+}
+
+.options-container.show {
+    display: block;
+}
+
+.option-item {
+    padding: 10px 12px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.option-item:hover {
+    background-color: #f0f0f0;
+}
+
+.option-item.selected {
+    background-color: #e0e0e0;
+    font-weight: bold;
+    color: #f46c6c;
+}
+
+/* "등록하기" 버튼 스타일 */
+.btn-submit {
+    display: block;
+    width: 75px; /* 버튼 너비를 1/2 크기 (이전 150px -> 75px)로 줄임 */
+    padding: 12px 0;
+    margin-left: auto; /* 우측 정렬 유지 */
+    margin-top: 30px;
+    background: linear-gradient(135deg, #fcd0a0, #f46c6c);
+    color: #fff;
+    font-weight: bold;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+.btn-submit:hover {
+    background-color: #45a049;
+}
+
+/* 기존 입력 필드 및 텍스트 영역의 폭 조정 클래스 (필요하면 사용) */
+.full-width-input,
+.full-width-textarea {
+    width: 100%;
+}

@@ -1,0 +1,154 @@
+/* main.css - Sorbet 게시판 메인 페이지 전용 스타일 */
+
+body {
+    font-family: 'Segoe UI', 'Malgun Gothic', sans-serif;
+    background-color: #FDF9F2;
+    margin: 0;
+    padding: 0;
+    color: #333;
+}
+
+a {
+    text-decoration: none;
+    color: #222222;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+h1 {
+    color: #222222;
+    margin: 0;
+}
+
+/* 상단 네비게이션 바 */
+.top-nav {
+    background: #fff;
+    border-bottom: 1px solid #ddd;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 100;
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+/* 전체 레이아웃 구성 */
+.layout {
+    display: grid;
+    grid-template-columns: 250px 1fr;
+    gap: 20px;
+    max-width: 1200px;
+    margin: 80px auto 40px;
+    padding: 0 20px;
+}
+
+/* 사이드바 */
+.sidebar {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    position: sticky;
+    top: 80px;
+    height: fit-content;
+}
+
+.sidebar h2 {
+    margin-top: 0;
+    font-size: 1.2em;
+    margin-bottom: 15px;
+}
+
+.sidebar .nav-btn {
+    display: block;
+    margin: 8px 0;
+    width: 100%;
+}
+
+/* 메인 콘텐츠 영역 */
+.content {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.post-box {
+    background: #fff;
+    border: 1px solid #E0E0E0;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    transition: transform 0.2s;
+}
+
+.post-box:hover {
+    transform: translateY(-2px);
+}
+
+.post-box .category {
+    font-size: 0.85em;
+    color: #777;
+    margin-bottom: 8px;
+}
+
+.post-box a {
+    font-size: 1.25em;
+    font-weight: 600;
+    color: #333;
+}
+
+/* 글쓰기 버튼 */
+.btn-write {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: linear-gradient(135deg, #fcd0a0, #f46c6c);
+    color: #fff;
+    padding: 10px 18px;
+    border: none;
+    border-radius: 6px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    font-weight: bold;
+    cursor: pointer;
+}
+
+/* 태그/카테고리 버튼 */
+.nav-btn {
+    background: #F0F0F0;
+    padding: 8px 12px;
+    border-radius: 20px;
+    color: #555;
+    transition: background 0.3s, transform 0.2s;
+    border: none;
+    text-align: left;
+}
+
+.nav-btn:hover {
+    background: #E0E0E0;
+    transform: translateX(4px);
+}
+
+.nav-btn.active {
+    background: linear-gradient(135deg, #f6b391, #e94d4d);
+    color: #fff;
+    box-shadow: 0 2px 8px rgba(76, 175, 80, 0.3);
+}
+
+/* 반응형 */
+@media(max-width: 800px) {
+    .layout {
+        grid-template-columns: 1fr;
+    }
+    .top-nav {
+        justify-content: center;
+    }
+    .sidebar {
+        position: relative;
+        top: auto;
+    }
+}

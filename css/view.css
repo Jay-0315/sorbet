@@ -1,0 +1,233 @@
+/* common.css */
+/* 기존 common.css 내용은 그대로 유지됩니다. */
+/* 아래 스타일은 view.html 내부 <style> 태그에 추가하거나, 별도 view.css 파일로 분리하여 링크할 수 있습니다. */
+
+/* 배경색 변경 */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 40px;
+    background-color: #FDF9F2; /* 새로운 배경색 */
+}
+
+.container {
+    max-width: 800px;
+    margin: auto;
+    padding: 30px;
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+}
+
+.top-buttons {
+    text-align: right;
+    margin-bottom: 20px;
+}
+
+/* 글 수정/삭제 버튼 컨테이너 */
+.post-actions {
+    text-align: right;
+    margin-bottom: 40px;
+    padding-top: 10px;
+}
+
+/* 메인 글 수정/삭제 버튼 스타일 */
+.btn-post-action {
+    display: inline-block;
+    background-color: #e0e0e0; /* 연한 회색 */
+    color: #555; /* 글자색 진한 회색 */
+    padding: 3px 10px; /* 패딩 조정하여 크기 줄임 */
+    font-weight: bold;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    font-size: 0.85em; /* 글자 크기 약간 줄임 */
+    margin-left: 8px;
+}
+
+.btn-post-action:hover {
+    background-color: #d0d0d0; /* 호버 시 약간 더 진하게 */
+}
+
+.btn-post-action.delete { /* 삭제 버튼은 별도 색상 */
+    background-color: #e0e0e0; /* 연한 회색 */
+    color: #f44336; /* 글자색은 빨간색 */
+}
+
+.btn-post-action.delete:hover {
+    background-color: #d0d0d0;
+}
+
+
+/* 태그, 제목, 메타, 본문 공통 스타일 (이전과 동일) */
+.tag {
+    display: inline-block;
+    background-color: #E8F5E9;
+    border: 1px solid #A5D6A7;
+    color: #388E3C;
+    font-size: 0.8em;
+    padding: 4px 10px;
+    border-radius: 15px;
+    margin-right: 6px;
+    margin-bottom: 8px;
+    font-weight: 500;
+}
+
+.tags-top {
+    margin-top: 15px;
+    font-size: 0.9em;
+    color: #999;
+    margin-bottom: 5px;
+}
+
+h1 {
+    color: #000;
+    font-size: 28px;
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+
+.meta {
+    margin-bottom: 20px;
+    color: #555;
+    font-size: 0.9em;
+}
+
+.content {
+    white-space: pre-wrap;
+    margin-bottom: 40px;
+    overflow-y: auto;
+    resize: none;
+    max-height: 400px;
+    border: 1px solid #E0E0E0;
+    padding: 15px;
+    border-radius: 8px;
+    background-color: #fdfdfd;
+    line-height: 1.6;
+    color: #333;
+}
+
+.comment-box {
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 1px solid #eee;
+}
+
+.comment-box h3 {
+    margin-top: 0;
+    color: #444;
+    font-size: 20px;
+    margin-bottom: 15px;
+}
+
+.comment-input-area {
+    display: flex;
+    gap: 10px;
+    align-items: flex-end;
+    margin-bottom: 20px;
+}
+
+/* 댓글 글박스 크기 조절 불가 */
+.comment-box textarea {
+    flex-grow: 1;
+    min-height: 60px;
+    max-height: 150px;
+    overflow-y: auto;
+    resize: none; /* 크기 조절 불가 */
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.comment-box textarea:focus {
+    border-color: #4CAF50;
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.2);
+}
+
+/* 댓글 등록 버튼 스타일 변경 */
+.comment-box .btn-submit {
+    flex-shrink: 0;
+    padding: 10px 20px;
+    background: linear-gradient(135deg, #fcd0a0, #f46c6c); /* 그라데이션 배경색 */
+    color: white;
+    font-weight: normal;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.comment-box .btn-submit:hover {
+    background: linear-gradient(135deg, #f46c6c, #fcd0a0); /* 호버 시 그라데이션 반전 */
+    transform: none;
+}
+
+.comment-list {
+    margin-top: 20px;
+    border-top: 1px solid #eee;
+    padding-top: 20px;
+}
+
+.comment-item {
+    padding: 15px 0;
+    border-bottom: 1px solid #f0f0f0;
+    margin-bottom: 0;
+}
+
+.comment-item:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+}
+
+.comment-author {
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 5px;
+}
+
+.comment-date {
+    font-size: 0.8em;
+    color: #999;
+    margin-left: 10px;
+}
+
+.comment-text {
+    color: #666;
+    line-height: 1.6;
+    white-space: pre-wrap;
+}
+
+/* 댓글 수정/삭제 버튼 스타일 */
+.comment-actions {
+    text-align: right;
+    margin-top: 5px;
+}
+
+.comment-actions .btn-small {
+    padding: 5px 10px;
+    font-size: 0.75em;
+    margin-left: 5px;
+    background-color: #e0e0e0;
+    color: #555;
+    border-radius: 4px;
+    cursor: pointer;
+    border: none;
+    transition: background-color 0.2s ease;
+}
+
+.comment-actions .btn-small:hover {
+    background-color: #d0d0d0;
+}
+
+.comment-actions .btn-delete {
+    background-color: #f44336;
+    color: white;
+}
+
+.comment-actions .btn-delete:hover {
+    background-color: #d32f2f;
+}

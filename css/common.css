@@ -1,0 +1,27 @@
+body {
+    font-family: 'Segoe UI', 'Malgun Gothic', 'Apple SD Gothic Neo', 'Nanum Gothic', sans-serif;
+    background-color: #FDF9F2; /* 전체 배경색: 아주 밝은 회색 */
+    color: #333333; /* 기본 글자색 */
+    margin: 0;
+    padding: 0;
+    line-height: 1.6; /* 줄 간격 */
+}
+/* 모든 페이지 공통 */
+
+.container {
+    max-width: 1000px;
+    margin: 30px auto;
+    padding: 30px;
+    background-color: #FFFFFF; /* 흰색 배경 박스 */
+    border-radius: 12px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+}
+/* 모든 페이지에서 메인 콘텐츠 영역 디자인 */
+
+h1, h2, h3, h4, h5, h6 {
+    color: #222222; /* 초록색 강조 */
+    margin-top: 0;
+    margin-bottom: 25px;
+    font-weight: 600;
+}
+/* 공통 제목 스타일 */
