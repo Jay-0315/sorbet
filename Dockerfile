@@ -11,4 +11,5 @@ COPY . .
 RUN ./gradlew clean bootJar -x test
 
 # JAR 파일 실행 (파일명 정확히 확인!)
-CMD ["java", "-jar", "build/libs/sorbet-0.0.1-SNAPSHOT.jar"]
+CMD ["java", "-jar", "/app/build/libs/sorbet-0.0.1-SNAPSHOT.jar"]
+
