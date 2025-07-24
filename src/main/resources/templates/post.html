@@ -1,0 +1,80 @@
+<!-- templates/post.html -->
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+  <meta charset="UTF-8">
+  <title>글 보기 - Sorbet 게시판</title>
+  <link rel="stylesheet" href="/css/post.css">
+</head>
+<body>
+<div class="container">
+  <div class="tags-top">
+    <span class="tag" th:each="tag : ${post.tags}" th:text="${tag}"></span>
+  </div>
+
+  <h1 th:text="${post.title}">제목</h1>
+
+
+  <sec:authorize access="isAuthenticated()">
+    <th:block th:if="${post.user.id == #authentication.principal.user.id}">
+      <form th:action="@{'/post/' + ${post.id} + '/delete'}" method="post"
+            onsubmit="return confirm('정말 삭제하시겠습니까?')">
+        <button type="submit" class="btn-delete">글 삭제</button>
+      </form>
+    </th:block>
+  </sec:authorize>
+
+
+  <div class="meta">
+    작성자:
+    <span th:text="${post.writer}">작성자</span> |
+    <span th:text="${post.user.levelEmoji + ' ' + post.user.levelLabel}"
+          th:style="'color:' + ${post.user.levelColor}">등급</span> |
+    <span th:text="${#temporals.format(post.createdAt, 'yyyy-MM-dd HH:mm')}">작성일</span> |
+    카테고리:
+    <span th:text="${post.category}">카테고리</span>
+  </div>
+
+
+  <div class="content" th:text="${post.content}">본문 내용</div>
+
+  <div class="comment-box">
+    <h3>댓글</h3>
+
+    <div th:each="comment : ${comments}" class="comment-item">
+      <div class="comment-content">
+        <p th:text="${comment.content}">댓글 내용</p>
+        <div class="comment-meta">
+          <span th:text="${comment.nickname}">작성자</span> |
+          <span th:text="${comment.levelEmoji} + ' ' + ${comment.levelLabel}"
+                th:style="'color:' + ${comment.levelColor}">등급</span> |
+          <span th:text="${#temporals.format(comment.createdAt, 'yyyy-MM-dd HH:mm')}">작성일</span>
+        </div>
+      </div>
+
+      <form th:if="${userId == comment.userId}"
+            th:action="@{|/comments/delete/${comment.id}|}"
+            method="post"
+            onsubmit="return confirm('삭제하시겠습니까?')">
+        <input type="hidden" name="postId" th:value="${post.id}" />
+        <button type="submit" class="btn-delete">삭제</button>
+      </form>
+    </div>
+
+    <!-- 댓글 입력창 -->
+    <form th:action="@{/comments}" method="post">
+      <input type="hidden" name="userId" th:value="${user.id}" />
+      <input type="hidden" name="postId" th:value="${post.id}" />
+      <textarea name="content" placeholder="댓글을 입력하세요..." rows="3" required></textarea>
+      <button type="submit" class="btn-submit">댓글 등록</button>
+    </form>
+
+  </div>
+  <div>
+    <a href="/" class="btn-home">← 홈으로 돌아가기</a>
+  </div>
+
+</div>
+</body>
+</html>

@@ -1,44 +1,62 @@
-<!-- templates/register.html -->
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
-  <title>회원가입</title>
-  <link rel="stylesheet" type="text/css" href="/css/register.css">
+  <title>SORBET 회원가입</title>
+  <style>
+    .error {
+      color: #FA8DA8;
+      font-weight: bold;
+      font-size: 14px;
+      margin-top: 5px;
+    }
+    </style>
+  <link rel="stylesheet" th:href="@{/css/login.css}">
 </head>
 <body>
-<div class="container">
-  <h2>회원가입</h2>
+<div class="login-wrapper">
+  <h2>SORBET - 회원가입</h2>
 
-  <!-- 에러 메시지 표시 -->
-  <div th:if="${errorMessage}" class="error-box">
+  <!-- 서버 로직 에러 메시지 (중복 아이디 등) -->
+  <div class="error-message" th:if="${errorMessage}">
     <p th:text="${errorMessage}"></p>
   </div>
 
-  <!-- 회원가입 폼 -->
   <form th:action="@{/register}" th:object="${member}" method="post">
-    <div>
-      <label for="userid">아이디 :</label>
-      <input type="text" id="userid" th:field="*{userId}">
+    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+
+    <!-- 아이디 -->
+    <div class="form-group">
+      <label for="userId">아이디</label>
+      <input type="text" id="userId" th:field="*{userId}" placeholder="아이디 입력" />
+      <div class="error" th:if="${#fields.hasErrors('userId')}" th:errors="*{userId}"></div>
     </div>
-    <div>
-      <label for="password">비밀번호:</label>
-      <input type="password" id="password" th:field="*{password}">
+
+    <!-- 비밀번호 -->
+    <div class="form-group">
+      <label for="password">비밀번호</label>
+      <input type="password" id="password" th:field="*{password}" placeholder="비밀번호 입력" />
+      <div class="error" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
     </div>
-    <div>
-      <label for="email">이메일 :</label>
-      <input type="text" id="email" th:field="*{email}">
+
+    <!-- 닉네임 -->
+    <div class="form-group">
+      <label for="nickname">닉네임</label>
+      <input type="text" id="nickname" th:field="*{nickname}" placeholder="닉네임 입력" />
+      <div class="error" th:if="${#fields.hasErrors('nickname')}" th:errors="*{nickname}"></div>
     </div>
-    <div>
-      <label for="nickname">닉네임 :</label>
-      <input type="text" id="nickname" th:field="*{nickname}">
+
+    <!-- 이메일 -->
+    <div class="form-group">
+      <label for="email">이메일</label>
+      <input type="email" id="email" th:field="*{email}" placeholder="이메일 입력" />
+      <div class="error" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
     </div>
-    <div>
-      <button type="submit">가입하기</button>
-    </div>
+
+    <button type="submit">회원가입</button>
   </form>
 
-  <p><a th:href="@{/login}">로그인</a> 하러 가기</p>
+  <p class="signup-text">이미 계정이 있으신가요? <a th:href="@{/login}">로그인</a></p>
 </div>
 </body>
 </html>

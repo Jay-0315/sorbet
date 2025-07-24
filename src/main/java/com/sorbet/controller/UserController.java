@@ -2,9 +2,11 @@ package com.sorbet.controller;
 
 import com.sorbet.dto.UserRegisterDto;
 import com.sorbet.service.UserService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
@@ -34,13 +36,19 @@ public class UserController {
 
     // 회원가입 처리
     @PostMapping("/register")
-    public String register(@ModelAttribute("member") UserRegisterDto dto, Model model) {
+    public String register(@Valid @ModelAttribute("member") UserRegisterDto dto,
+                           BindingResult result, Model model) {
+        if (result.hasErrors()) {
+            return "register"; // 유효성 실패 시 다시 폼으로
+        }
+
         try {
-            userService.join(dto); // 💡 엔티티가 아닌 DTO 사용
+            userService.join(dto);
             return "redirect:/login";
         } catch (IllegalStateException e) {
             model.addAttribute("errorMessage", e.getMessage());
             return "register";
         }
+
     }
 }

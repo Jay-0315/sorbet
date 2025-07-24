@@ -1,0 +1,60 @@
+/* 기본 설정 */
+body {
+    font-family: 'Segoe UI', 'Malgun Gothic', sans-serif;
+    background-color: #FDF9F2;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+/* 마이페이지 전체 카드 스타일 */
+.mypage-container {
+    background-color: #ffffff;
+    padding: 40px 50px;
+    border-radius: 16px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.08);
+    width: 400px;
+    text-align: center;
+}
+
+/* 인사 텍스트 */
+.mypage-container h1 {
+    color: #FA8DA8;
+    margin-bottom: 30px;
+    font-size: 24px;
+}
+
+/* 유저 정보 영역 */
+.info-box {
+    background-color: #fff6f6;
+    padding: 20px;
+    border-radius: 10px;
+    border: 1px solid #fcd0a0;
+    text-align: left;
+    font-size: 15px;
+    line-height: 1.8;
+    margin-bottom: 25px;
+}
+
+.info-box p {
+    margin: 8px 0;
+}
+
+/* 홈 버튼 */
+.home-btn {
+    display: inline-block;
+    background: linear-gradient(135deg, #fcd0a0, #f46c6c);
+    color: white;
+    font-weight: bold;
+    text-decoration: none;
+    padding: 12px 20px;
+    border-radius: 6px;
+    transition: background-color 0.3s ease;
+}
+
+.home-btn:hover {
+    background: linear-gradient(135deg, #f6b391, #e94d4d);
+}

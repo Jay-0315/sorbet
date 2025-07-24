@@ -1,11 +1,12 @@
 package com.sorbet.entity;
-
+import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import com.sorbet.domain.UserLevel;
 import jakarta.persistence.*;
 import lombok.*;
-
 import java.util.Collection;
 import java.util.Collections;
 
@@ -13,14 +14,17 @@ import java.util.Collections;
 @Getter @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@DynamicInsert
+@DynamicUpdate
 @Builder
-public class User implements UserDetails {
+public class User{
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "user_id")
     private Long id;
 
     @Column(unique = true, nullable = false)
-    private String userId;
+    private String userLoginId;
 
     @Column(nullable = false)
     private String password;
@@ -31,45 +35,75 @@ public class User implements UserDetails {
     @Column(unique = true, nullable = false)
     private String email;
 
+    @Column(nullable = false)
+    private int point;
 
-    private int point = 0;
 
     @Enumerated(EnumType.STRING)
-    private UserLevel level = UserLevel.PLAIN;
+    @Column(nullable = false)
+    @ColumnDefault("'PLAIN'")
+    private UserLevel level;
+
 
     public void addPoint(int value) {
         this.point += value;
         this.level = UserLevel.calculateLevel(this.point);
     }
 
-    // 🔽 필수 구현 메서드들
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Collections.emptyList();
+    public void updateLevelByPoint() {
+        this.level = UserLevel.calculateLevel(this.point);
     }
 
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
+
+/*    // 🔽 필수 구현 메서드들
+        @Override
+        public Collection<? extends GrantedAuthority> getAuthorities() {
+            return Collections.emptyList();
+        }
+
+        @Override
+        public boolean isAccountNonExpired() {
+            return true;
+        }
+
+        @Override
+        public boolean isAccountNonLocked() {
+            return true;
+        }
+
+        @Override
+        public boolean isCredentialsNonExpired() {
+            return true;
+        }
+
+        @Override
+        public boolean isEnabled() {
+            return true;
+        }
+
+        @Override
+        public String getUsername() {
+            return userId;
+        }*/
+
+    // User.java
+
+    public UserLevel getUserLevel() {
+        return UserLevel.calculateLevel(this.point);
     }
 
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
+    public String getLevelLabel() {
+        return getUserLevel().getLabel();
     }
 
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
+    public String getLevelEmoji() {
+        return getUserLevel().getEmoji();
     }
 
-    @Override
-    public boolean isEnabled() {
-        return true;
+    public String getLevelColor() {
+        return getUserLevel().getColorCode();
     }
 
-    @Override
-    public String getUsername() {
-        return userId;
-    }
+
 }
+

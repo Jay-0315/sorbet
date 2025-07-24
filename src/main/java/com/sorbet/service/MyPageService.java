@@ -11,10 +11,12 @@ import org.springframework.stereotype.Service;
 public class MyPageService {
 
     public UserActivityDto getUserInfo(User user) {
+        user.updateLevelByPoint();
+
         return UserActivityDto.builder()
                 .nickname(user.getNickname())
                 .email(user.getEmail())
-                .userId(user.getUserId())
+                .userId(user.getUserLoginId())
                 .point(user.getPoint())
                 .level(user.getLevel())
                 .build();

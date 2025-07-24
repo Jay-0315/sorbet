@@ -3,34 +3,50 @@
 <head>
   <meta charset="UTF-8">
   <title>글쓰기 - Sorbet 게시판</title>
-  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/createpost.css">
 </head>
 <body>
 <div class="container">
-  <h1>글 작성</h1>
+  <h1>당신의 이야기를 들려주세요.</h1>
 
   <!-- GET 방식으로 view.html로 이동 -->
-  <form action="/view.html" method="get">
-    <label for="title">제목</label>
-    <input type="text" id="title" name="title" required />
+  <form class="form-box" th:action="@{/createpost}" method="post" th:object="${post}">
 
-    <label for="content">내용</label>
-    <textarea id="content" name="content" rows="6" required></textarea>
+    <div class="form-group">
+      <label th:for="*{title}">제목</label>
+      <input type="text" th:field="*{title}" required />
+    </div>
 
-    <label for="category">카테고리</label>
-    <input type="text" id="category" name="category" placeholder="예: 연애, 사주, 인생" />
+    <div class="form-group">
+      <label th:for="*{content}">내용</label>
+      <textarea th:field="*{content}" rows="6" required></textarea>
+    </div>
 
-    <label for="writer">작성자 닉네임</label>
-    <input type="text" id="writer" name="writer" required />
+    <div class="form-group">
+      <label th:for="*{category}">카테고리</label>
+      <select th:field="*{category}">
+        <option value="">선택하세요</option>
+        <option value="love">연애</option>
+        <option value="friend">친구</option>
+        <option value="life">인생</option>
+        <option value="etc">기타</option>
+      </select>
+    </div>
 
-    <label for="consultant">상담사 ID</label>
-    <input type="text" id="consultant" name="consultant" required />
+    <div class="form-group">
+      <label th:for="*{writer}">작성자 닉네임</label>
+      <input type="text" th:field="*{writer}" readonly />
+    </div>
 
-    <label for="tags">태그 (쉼표로 구분)</label>
-    <input type="text" id="tags" name="tags" placeholder="연애, 친구, 사주 등" />
+    <div class="form-group">
+      <label th:for="*{tags}">태그</label>
+      <input type="text" th:field="*{tags}" />
+    </div>
 
     <button type="submit" class="btn-submit">등록하기</button>
   </form>
+
+
 </div>
 </body>
 </html>

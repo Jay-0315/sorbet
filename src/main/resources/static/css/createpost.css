@@ -1,0 +1,81 @@
+/* 전체 페이지 설정 */
+body {
+    font-family: 'Segoe UI', 'Malgun Gothic', sans-serif;
+    background: #FDF9F2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+}
+
+/* 폼 스타일 */
+form.form-box {
+    background-color: #ffffff;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.08);
+    width: 500px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* 제목 */
+h1 {
+    text-align: center;
+    color: #FA8DA8;
+    margin-bottom: 20px;
+}
+
+/* 라벨 및 입력 필드 정렬 */
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    font-size: 15px;
+    color: #444;
+}
+
+input[type="text"],
+textarea,
+.select-box {
+    width: 100%;
+    padding: 14px 12px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    box-sizing: border-box;
+    background-color: #fdfdfd;
+    resize: none;
+}
+
+/* 드롭다운 */
+.select-box {
+    appearance: none;
+}
+
+/* 텍스트박스 고정 높이 */
+textarea {
+    height: 150px;
+    overflow-y: auto;
+}
+
+/* 버튼 스타일 */
+.btn-submit {
+    background: linear-gradient(135deg, #fcd0a0, #f46c6c);
+    color: white;
+    font-weight: bold;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    padding: 12px 0;
+    font-size: 16px;
+    width: 100%;
+    transition: background-color 0.3s ease;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+.btn-submit:hover {
+    background: linear-gradient(135deg, #f6b391, #e94d4d);
+}
