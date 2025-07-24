@@ -15,6 +15,7 @@ public class UserController {
 
     private final UserService userService;
 
+    // test
     // 로그인 폼
     @GetMapping("/login")
     public String loginForm() {
