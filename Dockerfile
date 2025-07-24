@@ -8,7 +8,7 @@ WORKDIR /app
 COPY . .
 
 # Gradle로 프로젝트 빌드
-RUN ./gradlew build -x test
+RUN ./gradlew clean bootJar -x test
 
 # JAR 파일 실행 (파일명 정확히 확인!)
 CMD ["java", "-jar", "build/libs/sorbet-0.0.1-SNAPSHOT.jar"]
