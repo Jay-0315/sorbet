@@ -12,6 +12,14 @@ java {
         languageVersion = JavaLanguageVersion.of(21)
     }
 }
+bootJar {
+    archiveFileName = 'sorbet-0.0.1-SNAPSHOT.jar'
+}
+
+springBoot {
+    mainClass = 'com.sorbet.SorbetApplication' // 실제 main 클래스 경로
+}
+
 
 configurations {
     compileOnly {

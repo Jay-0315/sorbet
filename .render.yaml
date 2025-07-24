@@ -3,3 +3,5 @@ services:
     name: sorbet-app
     runtime: docker
     plan: free
+    dockerfilePath: Dockerfile
+
