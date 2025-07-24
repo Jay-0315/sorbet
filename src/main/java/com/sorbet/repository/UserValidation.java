@@ -11,6 +11,6 @@ public class UserValidation {
     private final UserRepository userRepository;
 
     public boolean existsByUserId(String userId) {
-        return userRepository.existsByUserId(userId);
+        return userRepository.existsByUserLoginId(userId);
     }
 }

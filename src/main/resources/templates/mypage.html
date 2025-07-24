@@ -1,16 +1,31 @@
-<!-- templates/mypage.html -->
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>마이페이지</title>
+    <link rel="stylesheet" href="/css/mypage.css">
 </head>
 <body>
-<h1 th:text="'안녕하세요, ' + ${user.nickname} + '님!'"></h1>
-<p>이메일: <span th:text="${user.email}"></span></p>
-<p>포인트: <span th:text="${user.point}"></span></p>
-<p>등급: <span th:text="${user.level}"></span></p>
-<p>활동 기록 (게시글 수): <span th:text="${user.postCount}"></span></p>
+<div class="mypage-container">
+    <h1><span th:text="'안녕하세요, ' + ${user.nickname} + '님!'"></span></h1>
 
-<a href="/home">홈으로</a>
+    <div class="info-box">
+        <p><strong>이메일:</strong> <span th:text="${user.email}"></span></p>
+        <p><strong>포인트:</strong> <span th:text="${user.point}"></span></p>
+        <p>
+            등급:
+            <span th:style="'color:' + ${user.level.colorCode}">
+  <span th:text="${user.level.emoji} + ' ' + ${user.level.label}"></span>
+</span>
+
+        </p>
+
+        <p><strong>활동 기록 (게시글 수):</strong>
+            <span th:text="${countByUser}">0</span>
+        </p>
+
+    </div>
+
+    <a href="/home" class="home-btn">홈으로</a>
+</div>
 </body>
 </html>

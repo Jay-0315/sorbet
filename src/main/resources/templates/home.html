@@ -1,65 +1,82 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
-      lang="ko">
-
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="kr">
 <head>
   <meta charset="UTF-8">
   <title>홈 | Sorbet</title>
   <link rel="stylesheet" href="/css/home.css">
 </head>
 <body>
-<div class="nav-top">
-  <a href="/">홈</a>
-  <a href="/about">소개</a>
-  <sec:authorize access="isAnonymous()">
-    <a href="/login">로그인</a>
-    <a href="/register">회원가입</a>
-  </sec:authorize>
-  <sec:authorize access="isAuthenticated()">
-    <a href="/mypage">마이페이지</a>
+<sec:authorize access="isAuthenticated()">
+  <div class="user-menu-fixed">
+    <a href="/mypage" class="user-btn1">마이페이지</a>
     <form th:action="@{/logout}" method="post" style="display:inline">
-      <button type="submit">로그아웃</button>
+      <button type="submit" class="user-btn2">로그아웃</button>
     </form>
-  </sec:authorize>
-</div>
+  </div>
+</sec:authorize>
 
-<div class="container">
-  <div class="sorbet-logo">Sorbet</div>
-  <h1>뭐든지 묻고, 답하세요 Sorbet, Solve at</h1>
 
-  <sec:authorize access="isAuthenticated()">
-    <p th:if="${nickname}" th:text="'안녕하세요, ' + ${nickname} + '님!'" style="text-align:center"></p>
-  </sec:authorize>
+<div class="sorbet-logo">Sorbet</div>
+<h1 class="main-title">뭐든지 묻고, 답하세요 Sorbet, Solve at</h1>
 
-  <div class="category-title">상담 게시판</div>
-  <div class="navbar">
-    <button class="nav-btn" data-category="love">연애</button>
-    <button class="nav-btn" data-category="friend">친구</button>
-    <button class="nav-btn" data-category="saju">사주</button>
-    <button class="nav-btn" data-category="life">인생</button>
-    <button class="nav-btn" data-category="etc">기타</button>
+<sec:authorize access="isAuthenticated()">
+  <p class="user-greeting" th:if="${nickname}" th:text="'안녕하세요, ' + ${nickname} + '님!'"></p>
+</sec:authorize>
+
+<div class="layout">
+  <div class="sidebar">
+    <h2>카테고리</h2>
+    <button class="nav-btn"
+            data-category="all"
+            th:classappend="${selectedCategory} == 'all' ? ' active' : ''">전체</button>
+
+    <button class="nav-btn"
+            data-category="love"
+            th:classappend="${selectedCategory} == 'love' ? ' active' : ''">연애</button>
+
+    <button class="nav-btn"
+            data-category="friend"
+            th:classappend="${selectedCategory} == 'friend' ? ' active' : ''">친구</button>
+
+    <button class="nav-btn"
+            data-category="life"
+            th:classappend="${selectedCategory} == 'life' ? ' active' : ''">인생</button>
+
+    <button class="nav-btn"
+            data-category="etc"
+            th:classappend="${selectedCategory} == 'etc' ? ' active' : ''">기타</button>
+
   </div>
 
-  <div>
+  <div class="content">
+    <div th:if="${posts != null and posts.isEmpty()}">
+      <p>등록된 글이 없습니다.</p>
+    </div>
+
+
     <div th:each="post : ${posts}" class="post-box">
       <div class="category" th:text="${post.category}">카테고리</div>
       <a th:href="@{|/posts/${post.id}|}" th:text="${post.title}">제목</a>
+      <div class="writer" th:text="'작성자: ' + ${post.writer}">작성자</div>
+      <div class="date" th:text="${#temporals.format(post.createdAt, 'yyyy-MM-dd HH:mm')}">날짜</div>
     </div>
   </div>
-
-  <a href="/create" class="btn-write">글쓰기</a>
 </div>
+
+  <a href="/createpost" class="btn-write">글쓰기</a>
 
 <script>
   document.addEventListener('DOMContentLoaded', function () {
     const navButtons = document.querySelectorAll('.nav-btn');
     navButtons.forEach(button => {
       button.addEventListener('click', function () {
-        navButtons.forEach(btn => btn.classList.remove('active'));
-        this.classList.add('active');
         const category = this.dataset.category;
-        console.log('Category clicked:', category);
+        if (category === 'all') {
+          window.location.href = '/home';
+        } else {
+          window.location.href = '/home?category=' + category;
+        }
       });
     });
   });

@@ -1,0 +1,152 @@
+body {
+    font-family: 'Segoe UI', 'Malgun Gothic', sans-serif;
+    background-color: #FDF9F2;
+    margin: 0;
+    padding: 40px 0;
+    color: #333;
+}
+
+
+
+.container {
+    max-width: 800px;
+    margin: auto;
+    background-color: #ffffff;
+    padding: 40px 50px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+}
+
+/* 제목 */
+h1 {
+    font-size: 28px;
+    margin-bottom: 30px;
+    color: #222;
+}
+textarea{
+    width: 100%;
+    padding: 14px 12px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    box-sizing: border-box;
+    background-color: #fdfdfd;
+    resize: none;
+}
+/* 태그 */
+.tags-top {
+    margin-bottom: 15px;
+}
+.tag {
+    display: inline-block;
+    background-color: #FFDEDE;
+    color: #333;
+    font-size: 13px;
+    padding: 4px 10px;
+    border-radius: 20px;
+    margin-right: 6px;
+    margin-bottom: 6px;
+}
+
+/* 작성자 등 메타 정보 */
+.meta {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 30px;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 15px;
+}
+
+/* 본문 내용 */
+.content {
+    white-space: pre-wrap;
+    font-size: 16px;
+    line-height: 1.7;
+    margin-bottom: 40px;
+}
+
+/* 댓글 하나당 항목 스타일 */
+.comment-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #fff;
+    padding: 10px 14px;
+    margin-bottom: 10px;
+    border: 1px solid #f2d5b3;
+    border-radius: 8px;
+}
+
+/* 댓글 텍스트 부분 */
+.comment-content {
+    display: flex;
+    flex-direction: column;
+}
+
+.comment-meta {
+    font-size: 12px;
+    color: #888;
+    margin-top: 4px;
+}
+
+/* 삭제 버튼 */
+.btn-delete {
+    display: inline-block;
+    margin-bottom: 20px;
+    background: linear-gradient(135deg, #fcd0a0, #f46c6c);
+    color: #f9f9f9;
+    font-size: 14px;
+    padding: 8px 14px;
+    border-radius: 6px;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+    font-weight: bold;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+.btn-delete:hover {
+    background-color: #ff9a9a;
+}
+
+.btn-submit {
+    display: inline-block;
+    margin-bottom: 20px;
+    background: linear-gradient(135deg, #fcd0a0, #f46c6c);
+    color: #f9f9f9;
+    font-size: 14px;
+    padding: 8px 14px;
+    border-radius: 6px;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+    font-weight: bold;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+.btn-submit:hover {
+    background-color: #d1d1d1;
+}
+
+.btn-home {
+    display: inline-block;
+    margin-bottom: 20px;
+    background: linear-gradient(135deg, #fcd0a0, #f46c6c);
+    color: #f9f9f9;
+    font-size: 14px;
+    padding: 8px 14px;
+    border-radius: 6px;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+    font-weight: bold;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+.btn-home:hover {
+    background-color: #d1d1d1;
+}
+
