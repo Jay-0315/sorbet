@@ -14,7 +14,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 
 @Configuration
 @EnableWebSecurity
@@ -46,17 +45,19 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .httpBasic(httpBasic -> httpBasic.disable()) // 기본 인증 (ID/PW 팝업) 비활성화
-                .csrf(csrf -> csrf
-                        .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
-                        .ignoringRequestMatchers("/login", "/register") // 로그인/회원가입은 CSRF 제외
-                )
+                .csrf(csrf -> csrf.disable()) // JWT 방식에서는 CSRF 비활성화 (HttpOnly 쿠키로 보호)
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS) // 세션 상태 저장 안함
                 )
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/register", "/login/**", "/css/**", "/js/**", "/comments").permitAll()
+                        // 공개 접근 가능한 경로
+                        .requestMatchers("/", "/home", "/register", "/login", "/logout").permitAll()
+                        .requestMatchers("/css/**", "/js/**", "/images/**", "/static/**").permitAll()
+                        .requestMatchers("/comments", "/posts/**").permitAll()
+                        // 인증이 필요한 경로
                         .requestMatchers("/mypage").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
                         .requestMatchers("/admin/**").hasAuthority("ROLE_ADMIN")
+                        .requestMatchers("/createpost").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(
