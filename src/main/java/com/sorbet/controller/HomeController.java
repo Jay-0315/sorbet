@@ -4,15 +4,15 @@ import com.sorbet.entity.Post;
 import com.sorbet.entity.User;
 import com.sorbet.repository.PostRepository;
 import com.sorbet.repository.UserRepository;
+import com.sorbet.security.CustomUserDetails;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.security.Principal;
 import java.util.List;
-import java.util.Optional;
 
 @Controller
 @RequiredArgsConstructor
@@ -23,12 +23,15 @@ public class HomeController {
 
     @GetMapping({"/", "/home"})
     public String home(@RequestParam(value = "category", required = false) String category,
-                       Model model, Principal principal) {
+                       Model model, 
+                       @AuthenticationPrincipal CustomUserDetails userDetails) {
 
-        if (principal != null) {
-            String userId = principal.getName();
-            Optional<User> user = userRepository.findByUserLoginId(userId);
-            user.ifPresent(value -> model.addAttribute("nickname", value.getNickname()));
+        // 로그인한 사용자 정보 추가
+        if (userDetails != null) {
+            model.addAttribute("nickname", userDetails.getNickname());
+            model.addAttribute("isLoggedIn", true);
+        } else {
+            model.addAttribute("isLoggedIn", false);
         }
 
         List<Post> posts;
@@ -43,6 +46,5 @@ public class HomeController {
         model.addAttribute("posts", posts);
         return "home";
     }
-
 }
 

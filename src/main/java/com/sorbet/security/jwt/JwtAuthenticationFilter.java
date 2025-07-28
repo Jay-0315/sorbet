@@ -34,41 +34,47 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         String path = request.getServletPath();
 
-//        if (path.equals("/register") || path.equals("/login")) {
-//            filterChain.doFilter(request, response);
-//            return;
-//        }
+        // 정적 리소스는 필터 통과
+        if (path.startsWith("/css/") || path.startsWith("/js/") || 
+            path.startsWith("/images/") || path.startsWith("/static/")) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+
         try {
             // 1. 쿠키에서 토큰 추출
             String token = resolveToken(request);
 
-            // 2. 토큰 유효성 검사 후 인증 등록
-
+            // 2. 토큰이 있으면 유효성 검사 후 인증 등록
             if (token != null && jwtTokenProvider.validateToken(token)) {
                 Authentication authentication = jwtTokenProvider.getAuthentication(token);
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }
 
-            // 다음 필터로 진행
+            // 다음 필터로 진행 (토큰이 없어도 진행)
             filterChain.doFilter(request, response);
 
         } catch (ExpiredJwtException e) {
-            // 토큰 만료 응답
-            response.sendRedirect("/login?error=expired");
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            response.setContentType("application/json; charset=UTF-8");
-            response.getWriter().write("{\"error\": \"로그인이 만료 되었습니다.\"}");
+            // 토큰 만료 시 쿠키 삭제하고 계속 진행
+            Cookie expiredCookie = new Cookie("sorbet-token", "");
+            expiredCookie.setMaxAge(0);
+            expiredCookie.setPath("/");
+            response.addCookie(expiredCookie);
+            
+            filterChain.doFilter(request, response);
 
         } catch (JwtException | IllegalArgumentException e) {
-            // 잘못된 토큰 응답
-            response.sendRedirect("/login?error=expired");
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            response.setContentType("application/json; charset=UTF-8");
-            response.getWriter().write("{\"error\": \"비정상적인 접근입니다.\"}");
+            // 잘못된 토큰 시 쿠키 삭제하고 계속 진행
+            Cookie invalidCookie = new Cookie("sorbet-token", "");
+            invalidCookie.setMaxAge(0);
+            invalidCookie.setPath("/");
+            response.addCookie(invalidCookie);
+            
+            filterChain.doFilter(request, response);
         }
     }
 
-    // ✅ 쿠키에서 sorbet-token 추출
+    // ✅ HttpOnly 쿠키에서 sorbet-token 추출
     private String resolveToken(HttpServletRequest request) {
         if (request.getCookies() != null) {
             for (Cookie cookie : request.getCookies()) {
@@ -80,13 +86,4 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         return null;
     }
 }
-
-//    //"Authorization: Bearer {token}" 형식에서 토큰 부분 추출...뭔소리지...
-//    private String resolveToken(HttpServletRequest request) {
-//        String bearerToken = request.getHeader("Authorization");
-//        if (bearerToken != null && bearerToken.startsWith("Bearer")){
-//            return bearerToken.substring(7); // "Bearer" 제거
-//        }
-//        return null;
-//    }
 

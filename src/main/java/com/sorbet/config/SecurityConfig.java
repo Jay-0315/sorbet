@@ -45,18 +45,25 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .httpBasic(httpBasic -> httpBasic.disable()) // 기본 인증 (ID/PW 팝업) 비활성화
-                .csrf(csrf -> csrf.disable())               // CSRF 비활성화 (JWT는 자체 보호)
+                .csrf(csrf -> csrf.disable()) // JWT 방식에서는 CSRF 비활성화 (HttpOnly 쿠키로 보호)
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS) // 세션 상태 저장 안함
                 )
+                // 기본 보안 헤더 설정
+                .headers(headers -> headers
+                        .frameOptions(frame -> frame.deny()) // 클릭재킹 방지
+                        .contentTypeOptions(contentType -> {}) // MIME 스니핑 방지
+                )
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/register", "/login/**", "/css/**", "/comments").permitAll()
-                        .requestMatchers("/mypage").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN") // ✅ 여기 수정
+                        // 공개 접근 가능한 경로 (간단하게)
+                        .requestMatchers("/", "/home", "/register", "/login", "/logout", 
+                                       "/css/**", "/js/**", "/images/**", "/static/**",
+                                       "/comments", "/posts/**").permitAll()
+                        // 인증이 필요한 경로
+                        .requestMatchers("/mypage", "/createpost").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
                         .requestMatchers("/admin/**").hasAuthority("ROLE_ADMIN")
                         .anyRequest().authenticated()
                 )
-
-
                 .addFilterBefore(
                         new JwtAuthenticationFilter(jwtTokenProvider), // JWT 필터 등록
                         UsernamePasswordAuthenticationFilter.class     // UsernamePasswordAuthenticationFilter 전에 실행

@@ -31,12 +31,13 @@ public class AuthController {
         String token = jwtTokenProvider.createToken(dto.getUserId(),
                 authentication.getAuthorities().stream().findFirst().get().getAuthority());
 
-        // 3. 쿠키에 저장
+        // 3. 보안 강화된 HttpOnly 쿠키 설정
         Cookie cookie = new Cookie("sorbet-token", token);
-        cookie.setHttpOnly(true);
-        cookie.setPath("/");
-        cookie.setMaxAge(60 * 60);
-        cookie.setSecure(false); // 1시간
+        cookie.setHttpOnly(true);        // XSS 방지 - JavaScript에서 접근 불가
+        cookie.setSecure(true);          // HTTPS에서만 전송
+        cookie.setPath("/");             // 모든 경로에서 접근 가능
+        cookie.setMaxAge(60 * 60 * 24); // 24시간
+        cookie.setAttribute("SameSite", "Lax"); // CSRF 방지 + 편의성
         response.addCookie(cookie);
 
         return ResponseEntity.ok().body("로그인 성공");
