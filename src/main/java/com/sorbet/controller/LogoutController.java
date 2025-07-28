@@ -10,12 +10,13 @@ import org.springframework.web.bind.annotation.RestController;
 public class LogoutController {
     @PostMapping("/logout")
     public ResponseEntity<?> logout(HttpServletResponse response) {
-        // 쿠키 삭제: 동일한 이름 & 경로 & maxAge = 0
+        // 쿠키 삭제: 동일한 이름 & 경로 & maxAge = 0 (보안 강화)
         ResponseCookie cookie = ResponseCookie.from("sorbet-token", "")
                 .httpOnly(true)
-                .secure(false)
+                .secure(true)          // HTTPS에서만 전송
                 .path("/")
-                .maxAge(0)
+                .maxAge(0)            // 즉시 삭제
+                .sameSite("Strict")   // CSRF 방지
                 .build();
 
         response.setHeader("Set-Cookie", cookie.toString());

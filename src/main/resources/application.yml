@@ -1,5 +1,5 @@
 server:
-  port: 8080
+  port: 8888
 
 jwt:
   secret: sorbet-secret-key-jwt-1234567890

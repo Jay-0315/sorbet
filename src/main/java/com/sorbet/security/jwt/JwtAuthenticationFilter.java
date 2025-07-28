@@ -43,7 +43,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             String token = resolveToken(request);
 
             // 2. 토큰 유효성 검사 후 인증 등록
-
             if (token != null && jwtTokenProvider.validateToken(token)) {
                 Authentication authentication = jwtTokenProvider.getAuthentication(token);
                 SecurityContextHolder.getContext().setAuthentication(authentication);
@@ -68,7 +67,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
     }
 
-    // ✅ 쿠키에서 sorbet-token 추출
+    // ✅ HttpOnly 쿠키에서 sorbet-token 추출
     private String resolveToken(HttpServletRequest request) {
         if (request.getCookies() != null) {
             for (Cookie cookie : request.getCookies()) {
@@ -80,13 +79,4 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         return null;
     }
 }
-
-//    //"Authorization: Bearer {token}" 형식에서 토큰 부분 추출...뭔소리지...
-//    private String resolveToken(HttpServletRequest request) {
-//        String bearerToken = request.getHeader("Authorization");
-//        if (bearerToken != null && bearerToken.startsWith("Bearer")){
-//            return bearerToken.substring(7); // "Bearer" 제거
-//        }
-//        return null;
-//    }
 

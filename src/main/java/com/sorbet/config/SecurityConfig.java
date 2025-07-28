@@ -14,6 +14,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 
 @Configuration
 @EnableWebSecurity
@@ -45,18 +46,19 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .httpBasic(httpBasic -> httpBasic.disable()) // 기본 인증 (ID/PW 팝업) 비활성화
-                .csrf(csrf -> csrf.disable())               // CSRF 비활성화 (JWT는 자체 보호)
+                .csrf(csrf -> csrf
+                        .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
+                        .ignoringRequestMatchers("/login", "/register") // 로그인/회원가입은 CSRF 제외
+                )
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS) // 세션 상태 저장 안함
                 )
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/register", "/login/**", "/css/**", "/comments").permitAll()
-                        .requestMatchers("/mypage").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN") // ✅ 여기 수정
+                        .requestMatchers("/register", "/login/**", "/css/**", "/js/**", "/comments").permitAll()
+                        .requestMatchers("/mypage").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
                         .requestMatchers("/admin/**").hasAuthority("ROLE_ADMIN")
                         .anyRequest().authenticated()
                 )
-
-
                 .addFilterBefore(
                         new JwtAuthenticationFilter(jwtTokenProvider), // JWT 필터 등록
                         UsernamePasswordAuthenticationFilter.class     // UsernamePasswordAuthenticationFilter 전에 실행
