@@ -2,34 +2,63 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
-  <title>SORBET</title>
+  <title>SORBET 로그인</title>
   <link rel="stylesheet" th:href="@{/css/login.css}">
+  <style>
+    .error { color: red; margin-top: 5px; }
+  </style>
 </head>
 <body>
 <div class="login-wrapper">
-  <h2>SORBET</h2>
+  <h2>SORBET - 로그인</h2>
 
-  <!-- 로그인 실패 시 메시지 표시 -->
-  <div th:if="${param.error}" class="error-message">
-    <p>아이디 또는 비밀번호가 올바르지 않습니다.</p>
-  </div>
+  <!-- 오류 메시지 표시 -->
+  <div class="error" id="error-message" style="display:none;"></div>
 
-  <form th:action="@{/login}" method="post" class="login-form">
-    <div>
-      <label for="userid">아이디:</label>
-      <input type="text" id="userid" name="username" required>
+  <form id="login-form">
+    <div class="form-group">
+      <label for="userId">아이디</label>
+      <input type="text" id="userId" name="userId" placeholder="아이디 입력" required>
     </div>
-    <div>
-      <label for="password">비밀번호:</label>
-      <input type="password" id="password" name="password" required>
+
+    <div class="form-group">
+      <label for="password">비밀번호</label>
+      <input type="password" id="password" name="password" placeholder="비밀번호 입력" required>
     </div>
-    <div>
-      <button type="submit">로그인</button>
-    </div>
+
+    <button type="submit">로그인</button>
   </form>
 
   <p class="signup-text">계정이 없으신가요? <a th:href="@{/register}">회원가입</a></p>
 </div>
-</body>
 
+<script>
+  document.getElementById('login-form').addEventListener('submit', async function (e) {
+    e.preventDefault();
+
+    const userId = document.getElementById('userId').value;
+    const password = document.getElementById('password').value;
+
+    const response = await fetch('/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ userId, password }),
+      credentials: "include"
+    });
+
+    if (response.ok) {
+      // 로그인 성공 후 이동할 페이지 (예: 마이페이지)
+      window.location.href = '/home';
+    } else {
+      // 에러 메시지 표시
+      const result = await response.json().catch(() => ({}));
+      document.getElementById('error-message').style.display = 'block';
+      document.getElementById('error-message').innerText =
+              result?.error || '로그인에 실패했습니다.';
+    }
+  });
+</script>
+</body>
 </html>

@@ -13,4 +13,11 @@ public class UserValidation {
     public boolean existsByUserId(String userId) {
         return userRepository.existsByUserLoginId(userId);
     }
+    public boolean existsByNickname(String nickname) {
+        return userRepository.existsByNickname(nickname);
+    }
+    public boolean existsByEmail(String email) {
+        return userRepository.existsByEmail(email);
+    }
+
 }

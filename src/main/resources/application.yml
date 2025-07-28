@@ -1,6 +1,10 @@
 server:
   port: 8080
 
+jwt:
+  secret: sorbet-secret-key-jwt-1234567890
+
+
 spring:
   application:
     name: Sorbet
@@ -18,3 +22,4 @@ spring:
         dialect: org.hibernate.dialect.MariaDBDialect
   thymeleaf:
     cache: false
+

@@ -3,9 +3,11 @@ package com.sorbet.security;
 import com.sorbet.entity.User;
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.List;
 
 @Getter
 public class CustomUserDetails implements UserDetails {
@@ -14,6 +16,12 @@ public class CustomUserDetails implements UserDetails {
 
     public CustomUserDetails(User user) {
         this.user = user;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(new SimpleGrantedAuthority(user.getRole().getKey()));
+        // 예: "ROLE_USER" 또는 "ROLE_ADMIN"
     }
 
     public String getNickname() {
@@ -30,11 +38,6 @@ public class CustomUserDetails implements UserDetails {
         return user.getPoint();
     }
 
-
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null; // 권한 없으면 null 또는 Collections.emptyList()
-    }
 
     @Override
     public String getPassword() {

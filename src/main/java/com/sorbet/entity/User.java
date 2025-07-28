@@ -2,13 +2,10 @@ package com.sorbet.entity;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 import com.sorbet.domain.UserLevel;
 import jakarta.persistence.*;
 import lombok.*;
-import java.util.Collection;
-import java.util.Collections;
+import com.sorbet.domain.Role;
 
 @Entity
 @Getter @Setter
@@ -43,6 +40,12 @@ public class User{
     @Column(nullable = false)
     @ColumnDefault("'PLAIN'")
     private UserLevel level;
+
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private Role role;
+
 
 
     public void addPoint(int value) {
