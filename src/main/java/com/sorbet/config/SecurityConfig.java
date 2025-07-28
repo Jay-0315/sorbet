@@ -49,15 +49,19 @@ public class SecurityConfig {
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS) // 세션 상태 저장 안함
                 )
+                // 기본 보안 헤더 설정
+                .headers(headers -> headers
+                        .frameOptions(frame -> frame.deny()) // 클릭재킹 방지
+                        .contentTypeOptions(contentType -> {}) // MIME 스니핑 방지
+                )
                 .authorizeHttpRequests(auth -> auth
-                        // 공개 접근 가능한 경로
-                        .requestMatchers("/", "/home", "/register", "/login", "/logout").permitAll()
-                        .requestMatchers("/css/**", "/js/**", "/images/**", "/static/**").permitAll()
-                        .requestMatchers("/comments", "/posts/**").permitAll()
+                        // 공개 접근 가능한 경로 (간단하게)
+                        .requestMatchers("/", "/home", "/register", "/login", "/logout", 
+                                       "/css/**", "/js/**", "/images/**", "/static/**",
+                                       "/comments", "/posts/**").permitAll()
                         // 인증이 필요한 경로
-                        .requestMatchers("/mypage").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
+                        .requestMatchers("/mypage", "/createpost").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
                         .requestMatchers("/admin/**").hasAuthority("ROLE_ADMIN")
-                        .requestMatchers("/createpost").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(

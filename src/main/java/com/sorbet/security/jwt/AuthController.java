@@ -40,12 +40,6 @@ public class AuthController {
         cookie.setAttribute("SameSite", "Lax"); // CSRF 방지 + 편의성
         response.addCookie(cookie);
 
-        // 4. 추가 보안 헤더 설정
-        response.setHeader("X-Content-Type-Options", "nosniff");
-        response.setHeader("X-Frame-Options", "DENY");
-        response.setHeader("X-XSS-Protection", "1; mode=block");
-        response.setHeader("Referrer-Policy", "strict-origin-when-cross-origin");
-
         return ResponseEntity.ok().body("로그인 성공");
     }
 }
