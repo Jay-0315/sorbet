@@ -17,7 +17,7 @@
 </sec:authorize>
 
 
-<div class="sorbet-logo">Sorbet</div>
+<div class="sorbet-logo">Sorbet.</div>
 <h1 class="main-title">뭐든지 묻고, 답하세요 Sorbet, Solve at</h1>
 
 <sec:authorize access="isAuthenticated()">
@@ -47,7 +47,9 @@
             data-category="etc"
             th:classappend="${selectedCategory} == 'etc' ? ' active' : ''">기타</button>
 
+    <img src="/images/runningRabits.png" alt="달리는 토끼" class="sidebar-image"/>
   </div>
+
 
   <div class="content">
     <div th:if="${posts != null and posts.isEmpty()}">

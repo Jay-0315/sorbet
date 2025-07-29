@@ -9,6 +9,22 @@ body {
     margin: 0;
 }
 
+
+.sorbetRabit{
+    display: block;
+    margin: 0 auto;
+    width: 200px;
+}
+
+@font-face {
+    font-family: 'Crayon';
+    src: url('/font/Crayon.ttf') format('truetype');
+}
+
+.use-crayon-font {
+    font-family: 'Crayon', sans-serif;
+}
+
 form {
     background-color: #ffffff;
     padding: 30px 40px;
@@ -20,7 +36,9 @@ form {
 h2 {
     text-align: center;
     color: #FA8DA8;
-    margin-bottom: 25px;
+    margin-bottom: 0.1px;
+    font-size: 150px;
+    margin-top: 10px;
 }
 
 div {
@@ -81,3 +99,5 @@ div[style*="color:red;"] {
     border-radius: 5px;
     text-align: center;
 }
+
+

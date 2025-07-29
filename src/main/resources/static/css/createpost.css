@@ -8,6 +8,22 @@ body {
     min-height: 100vh;
     margin: 0;
 }
+@font-face {
+    font-family: 'Crayon';
+    src: url('/font/Crayon.ttf') format('truetype');
+}
+
+.use-crayon-font {
+    font-family: 'Crayon', sans-serif;
+}
+
+.writing-image {
+    margin-top: 10px;
+    width: 160px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
 
 /* 폼 스타일 */
 form.form-box {
@@ -22,11 +38,14 @@ form.form-box {
 }
 
 /* 제목 */
-h1 {
+h1  {
     text-align: center;
     color: #FA8DA8;
-    margin-bottom: 20px;
+    margin-bottom: 0.1px;
+    margin-top: 0.2px;
+    font-size: 40px;
 }
+
 
 /* 라벨 및 입력 필드 정렬 */
 label {

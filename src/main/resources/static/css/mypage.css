@@ -9,6 +9,13 @@ body {
     align-items: center;
     min-height: 100vh;
 }
+.greeting-image {
+    margin-top: 20px;
+    width: 120px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
 
 /* 마이페이지 전체 카드 스타일 */
 .mypage-container {

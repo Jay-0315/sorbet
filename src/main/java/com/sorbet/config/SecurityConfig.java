@@ -56,7 +56,7 @@ public class SecurityConfig {
                 )
                 .authorizeHttpRequests(auth -> auth
                         // 공개 접근 가능한 경로 (간단하게)
-                        .requestMatchers("/", "/home", "/register", "/login", "/logout", 
+                        .requestMatchers("/", "/font/**","/home", "/register", "/login", "/logout",
                                        "/css/**", "/js/**", "/images/**", "/static/**",
                                        "/comments", "/posts/**").permitAll()
                         // 인증이 필요한 경로

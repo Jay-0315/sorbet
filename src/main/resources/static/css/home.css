@@ -6,6 +6,14 @@ body {
     padding: 0;
     color: #333;
 }
+@font-face {
+    font-family: 'Crayon';
+    src: url('/font/Crayon.ttf') format('truetype');
+}
+
+.sorbet-logo {
+    font-family: 'Crayon', sans-serif;
+}
 
 /* 링크 기본 스타일 */
 a {
@@ -71,9 +79,9 @@ a:hover {
 /* 로고 및 메인 제목 */
 .sorbet-logo {
     text-align: center;
-    font-size: 40px;
+    font-size: 100px;
     font-weight: bold;
-    color: #E4A545;
+    color: #f48ca0;
     margin-top: 30px;
 }
 
@@ -88,8 +96,8 @@ h1 {
 /* 인사 텍스트 */
 .user-greeting {
     text-align: center;
-    font-size: 16px;
-    color: #f48ca0;
+    font-size: 24px;
+   color: #E4A545;
     margin-bottom: 20px;
 }
 
@@ -105,6 +113,15 @@ h1 {
 }
 
 /* 사이드 카테고리 */
+
+.sidebar-image {
+    margin-top: 10px;
+    width: 210px;
+    display: block;
+
+
+}
+
 .sidebar {
     background: #fff;
     border: 1px solid #ddd;
@@ -217,10 +234,34 @@ h1 {
             grid-template-columns: 1fr;
         }
 
-        .nav-top {
+
+        .user-menu-fixed {
+            top: 0;
+            left: 0;
+            right: 0;
+            flex-direction: row;
             justify-content: center;
-            flex-wrap: wrap;
+            background-color: #fff5ec; /* 보기 좋게 배경도 추가 */
+            padding: 10px 0;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
         }
+
+        .user-btn1,
+        .user-btn2 {
+            width: auto;
+            margin: 0 8px;
+            text-align: center;
+            white-space: nowrap;
+            font-size: 14px;
+        }
+
+
+
+        /* 메인 콘텐츠 아래로 밀기 */
+        .main-content {
+            padding-top: 70px; /* header 높이보다 조금 더 */
+        }
+
 
         .btn-write {
             bottom: 10px;

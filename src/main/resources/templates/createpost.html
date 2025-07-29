@@ -7,10 +7,12 @@
 </head>
 <body>
 <div class="container">
-  <h1>당신의 이야기를 들려주세요.</h1>
 
   <!-- GET 방식으로 view.html로 이동 -->
   <form class="form-box" th:action="@{/createpost}" method="post" th:object="${post}">
+
+    <img src="/images/writingRabits.png" alt="끄적토끼" class="writing-image"/>
+    <h1 class="use-crayon-font">Tell us your story.</h1>
 
     <div class="form-group">
       <label th:for="*{title}">제목</label>
