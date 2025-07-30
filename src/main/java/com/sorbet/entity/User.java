@@ -1,4 +1,5 @@
 package com.sorbet.entity;
+import com.sorbet.domain.CharacterType;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
@@ -34,6 +35,11 @@ public class User{
 
     @Column(nullable = false)
     private int point;
+
+    // User.java
+    @Enumerated(EnumType.STRING)
+    private CharacterType character;
+
 
 
     @Enumerated(EnumType.STRING)

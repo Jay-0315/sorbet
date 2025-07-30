@@ -1,6 +1,12 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
+  <!-- Quill CSS -->
+  <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+  <!-- Quill JS -->
+  <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
+
+
   <meta charset="UTF-8">
   <title>글쓰기 - Sorbet 게시판</title>
   <link rel="stylesheet" href="/css/createpost.css">
@@ -8,8 +14,7 @@
 <body>
 <div class="container">
 
-  <!-- GET 방식으로 view.html로 이동 -->
-  <form class="form-box" th:action="@{/createpost}" method="post" th:object="${post}">
+  <form class="form-box" th:action="@{/createpost}" method="post" th:object="${post}" onsubmit="return submitContents();">
 
     <img src="/images/writingRabits.png" alt="끄적토끼" class="writing-image"/>
     <h1 class="use-crayon-font">Tell us your story.</h1>
@@ -19,10 +24,88 @@
       <input type="text" th:field="*{title}" required />
     </div>
 
-    <div class="form-group">
-      <label th:for="*{content}">내용</label>
-      <textarea th:field="*{content}" rows="6" required></textarea>
+    <!-- 툴바 영역 -->
+    <!-- 툴바 설정 -->
+    <div id="toolbar">
+  <span class="ql-formats">
+    <select class="ql-font"></select>
+    <select class="ql-size"></select>
+  </span>
+      <span class="ql-formats">
+    <button class="ql-bold"></button>
+    <button class="ql-italic"></button>
+    <button class="ql-underline"></button>
+  </span>
+      <span class="ql-formats">
+    <select class="ql-color"></select>
+    <select class="ql-background"></select>
+            <button class="ql-image"></button>
+         <button class="ql-link"></button>
+  </span>
+      <span class="ql-formats">
+    <button class="ql-align" value=""></button>
+    <button class="ql-align" value="center"></button>
+    <button class="ql-align" value="right"></button>
+  </span>
     </div>
+
+    <!-- Quill 에디터 -->
+    <div id="editor" style="height: 400px;"></div>
+
+    <script>
+      var quill = new Quill('#editor', {
+        modules: {
+          toolbar: {
+            container: '#toolbar',  // 🔸 DOM에 존재하는 toolbar 연결
+            handlers: {
+              image: imageHandler
+            }
+          }
+        },
+        theme: 'snow'
+      });
+
+      function imageHandler() {
+        const input = document.createElement('input');
+        input.setAttribute('type', 'file');
+        input.setAttribute('accept', 'image/*');
+        input.click();
+
+        input.onchange = async () => {
+          const file = input.files[0];
+          if (!file) return;
+
+          const formData = new FormData();
+          formData.append('image', file);
+
+          const res = await fetch('/upload-image', {
+            method: 'POST',
+            body: formData
+          });
+
+          const data = await res.json();
+          const range = quill.getSelection();
+          quill.insertEmbed(range.index, 'image', data.url);
+        };
+      }
+
+      // ✅ 여기 아래에 추가!
+      function submitContents() {
+        const html = quill.root.innerHTML;
+        document.getElementById('hiddenContent').value = html;
+
+        // (선택) 빈 내용 제출 방지
+        if (quill.getText().trim().length === 0) {
+          alert("본문 내용을 입력해주세요.");
+          return false;
+        }
+
+        return true;
+      }
+    </script>
+
+
+
 
     <div class="form-group">
       <label th:for="*{category}">카테고리</label>
@@ -46,9 +129,21 @@
     </div>
 
     <button type="submit" class="btn-submit">등록하기</button>
+    <!-- 숨겨진 필드: HTML 내용 저장 -->
+    <input type="hidden" name="content" id="hiddenContent">
+
   </form>
 
-
 </div>
+
+
+
+
+
+
+
+
+
+
 </body>
 </html>

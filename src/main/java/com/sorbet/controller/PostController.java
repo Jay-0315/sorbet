@@ -3,18 +3,22 @@ package com.sorbet.controller;
 import com.sorbet.dto.CommentDto;
 import com.sorbet.entity.User;
 import com.sorbet.entity.Post;
+import com.sorbet.repository.PostRepository;
 import com.sorbet.security.CustomUserDetails;
 import com.sorbet.service.CommentService;
 import com.sorbet.service.PostService;
 import com.sorbet.service.UserService;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import com.sorbet.service.PostReactionService;
 
 import java.util.List;
 
@@ -25,6 +29,7 @@ public class PostController {
     private final PostService postService;
     private final CommentService commentService;
     private final UserService userService;
+    private final PostReactionService postReactionService;
 
 
     // 홈 화면: 전체 게시글 출력
@@ -85,8 +90,15 @@ public class PostController {
                            @PathVariable Long id,
                            Model model) {
         Post post = postService.findById(id);
+        postService.increaseViewCount(id); // 조회수 1 증가된 Post 반환
+
         String username = userDetails.getUsername();
         User user = userService.findByUserId(username);
+
+        long likeCount = postReactionService.getLikeCount(id);
+        long dislikeCount = postReactionService.getDislikeCount(id);
+
+
 
         // 🟡 작성자의 닉네임 기반 등급 정보 조회
 
@@ -95,14 +107,19 @@ public class PostController {
         model.addAttribute("post", post);
 
 
+
         // 댓글 관련 정보
         List<CommentDto> comments = commentService.getCommentsByPostId(id);
         model.addAttribute("comments", comments);
         model.addAttribute("user", user);
         model.addAttribute("commentDto", new CommentDto());
         model.addAttribute("userId", user.getId());
+        model.addAttribute("likeCount", likeCount);
+        model.addAttribute("dislikeCount", dislikeCount);
 
         return "post";
     }
+
+
 
 }

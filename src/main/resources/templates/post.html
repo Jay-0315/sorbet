@@ -37,7 +37,47 @@
   </div>
 
 
-  <div class="content" th:text="${post.content}">본문 내용</div>
+  <div class="content" th:utext="${post.content}">본문 내용</div>
+
+  <div class="reaction-box">
+    <button class="btn-like" th:onclick="|react(${post.id}, 'like')|">👍 좋아요</button>
+    <span id="like-count" th:text="${likeCount}">0</span>
+
+    <button class="btn-dislike" th:onclick="|react(${post.id}, 'dislike')|">👎 별로예요</button>
+    <span id="dislike-count" th:text="${dislikeCount}">0</span>
+
+    <script th:inline="javascript">
+      function react(postId, type) {
+        fetch(`/post/reaction/${postId}/${type}`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        }).then(() => {
+          updateCounts(postId);
+        });
+      }
+
+      function updateCounts(postId) {
+        fetch(`/post/reaction/${postId}/counts`)
+                .then(res => res.json())
+                .then(data => {
+                  document.getElementById('like-count').textContent = data.likes;
+                  document.getElementById('dislike-count').textContent = data.dislikes;
+                });
+      }
+
+      // 페이지 로드 시 카운트 자동 갱신
+      document.addEventListener('DOMContentLoaded', () => {
+        const postId = [[${post.id}]];
+        updateCounts(postId);
+      });
+    </script>
+
+  </div>
+
+
+
 
   <div class="comment-box">
     <h3>댓글</h3>

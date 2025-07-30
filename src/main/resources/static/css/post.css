@@ -7,7 +7,6 @@ body {
 }
 
 
-
 .container {
     max-width: 800px;
     margin: auto;
@@ -64,6 +63,31 @@ textarea{
     line-height: 1.7;
     margin-bottom: 40px;
 }
+
+.reaction-box {
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.btn-like, .btn-dislike {
+    background-color: #f0f0f0;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.btn-like:hover {
+    background-color: #d2f5d0;
+}
+
+.btn-dislike:hover {
+    background-color: #f8c9c9;
+}
+
 
 /* 댓글 하나당 항목 스타일 */
 .comment-item {

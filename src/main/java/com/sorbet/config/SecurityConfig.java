@@ -51,14 +51,14 @@ public class SecurityConfig {
                 )
                 // 기본 보안 헤더 설정
                 .headers(headers -> headers
-                        .frameOptions(frame -> frame.deny()) // 클릭재킹 방지
+                        .frameOptions(frame -> frame.sameOrigin()) // 클릭재킹 방지
                         .contentTypeOptions(contentType -> {}) // MIME 스니핑 방지
                 )
                 .authorizeHttpRequests(auth -> auth
                         // 공개 접근 가능한 경로 (간단하게)
                         .requestMatchers("/", "/font/**","/home", "/register", "/login", "/logout",
                                        "/css/**", "/js/**", "/images/**", "/static/**",
-                                       "/comments", "/posts/**").permitAll()
+                                       "/comments", "/posts/**","/favicon.ico").permitAll()
                         // 인증이 필요한 경로
                         .requestMatchers("/mypage", "/createpost").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
                         .requestMatchers("/admin/**").hasAuthority("ROLE_ADMIN")

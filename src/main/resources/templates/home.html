@@ -19,14 +19,24 @@
 
 <div class="sorbet-logo">Sorbet.</div>
 <h1 class="main-title">뭐든지 묻고, 답하세요 Sorbet, Solve at</h1>
+<form th:action="@{/home}" method="get" class="search-form">
+  <input type="text" name="keyword" th:value="${searchKeyword}" placeholder="검색어 입력">
+  <button type="submit" class="search-btn">🔍검색</button>
+</form>
 
 <sec:authorize access="isAuthenticated()">
   <p class="user-greeting" th:if="${nickname}" th:text="'안녕하세요, ' + ${nickname} + '님!'"></p>
 </sec:authorize>
 
-<div class="layout">
+
+
+
+
+  <div class="layout">
   <div class="sidebar">
     <h2>카테고리</h2>
+
+
     <button class="nav-btn"
             data-category="all"
             th:classappend="${selectedCategory} == 'all' ? ' active' : ''">전체</button>
@@ -50,7 +60,6 @@
     <img src="/images/runningRabits.png" alt="달리는 토끼" class="sidebar-image"/>
   </div>
 
-
   <div class="content">
     <div th:if="${posts != null and posts.isEmpty()}">
       <p>등록된 글이 없습니다.</p>
@@ -58,12 +67,42 @@
 
 
     <div th:each="post : ${posts}" class="post-box">
+      <div class="post-header">
+        <div>
       <div class="category" th:text="${post.category}">카테고리</div>
-      <a th:href="@{|/posts/${post.id}|}" th:text="${post.title}">제목</a>
-      <div class="writer" th:text="'작성자: ' + ${post.writer}">작성자</div>
-      <div class="date" th:text="${#temporals.format(post.createdAt, 'yyyy-MM-dd HH:mm')}">날짜</div>
+
+      <a class="post-title" th:href="@{|/posts/${post.id}|}" th:text="${post.title}">제목</a>
+
+      <p class="writer" th:text="'🐰작성자: ' + ${post.writer}">작성자</p>
+        </div>
+
+      <img th:if="${post.thumbnailUrl != null}" th:src="${post.thumbnailUrl}" class="thumbnail" />
+      </div>
+      <!-- 오른쪽 하단 메타 정보 -->
+      <div class="footer-meta">
+        <span class="viewCount" th:text="'조회수: ' + ${post.views}">조회수</span>
+        <span class="likeCount" th:text="'좋아요: ' + ${post.likeCount}">좋아요</span>
+        <span class="date" th:text="'작성일자: ' + ${#temporals.format(post.createdAt, 'yyyy-MM-dd HH:mm')}">날짜</span>
+      </div>
     </div>
+
   </div>
+</div>
+<!-- 페이징 -->
+<div class="pagination" th:if="${totalPages > 1}">
+  <span th:if="${currentPage > 0}">
+    <a th:href="@{/home(category=${selectedCategory}, page=${currentPage - 1})}">이전</a>
+  </span>
+
+  <span th:each="i : ${#numbers.sequence(0, totalPages - 1)}">
+    <a th:href="@{/home(category=${selectedCategory}, page=${i})}"
+       th:text="${i + 1}"
+       th:classappend="${i == currentPage} ? ' current-page' : ''">1</a>
+  </span>
+
+  <span th:if="${currentPage < totalPages - 1}">
+    <a th:href="@{/home(category=${selectedCategory}, page=${currentPage + 1})}">다음</a>
+  </span>
 </div>
 
   <a href="/createpost" class="btn-write">글쓰기</a>

@@ -7,6 +7,15 @@ body {
     height: 100vh;
     margin: 0;
 }
+@font-face {
+    font-family: 'Crayon';
+    src: url('/font/Crayon.ttf') format('truetype');
+}
+
+.use-crayon-font {
+    font-family: 'Crayon', sans-serif;
+}
+
 
 .container {
     background-color: #ffffff;
@@ -22,13 +31,17 @@ body {
 h2 {
     color: #FA8DA8;
     margin-bottom: 20px;
-    font-size: 24px;
+    font-size: 60px;
     text-align: center;
     width: 100%;
 }
 
 form {
-    width: 100%;
+    background-color: #ffffff;
+    padding: 30px 40px;
+    border-radius: 12px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    width: 350px;
 }
 
 div {
