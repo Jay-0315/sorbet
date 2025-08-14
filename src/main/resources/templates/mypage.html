@@ -1,28 +1,93 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
+    <meta charset="UTF-8" />
     <title>마이페이지</title>
-    <link rel="stylesheet" href="/css/mypage.css">
+    <link rel="stylesheet" href="/css/mypage.css" />
 </head>
 <body>
 <div class="mypage-container">
+
     <img src="/images/greetingRabit.png" alt="안녕토끼" class="greeting-image"/>
-    <h1><span th:text="'안녕하세요, ' + ${user.nickname} + '님!'"></span></h1>
+    <h1 th:text="|안녕하세요, ${user.nickname}님!|">안녕하세요!</h1>
 
     <div class="info-box">
-        <p><strong>이메일:</strong> <span th:text="${user.email}"></span></p>
-        <p><strong>포인트:</strong> <span th:text="${user.point}"></span></p>
-        <p>
-            등급:
-            <span th:style="'color:' + ${user.level.colorCode}">
-  <span th:text="${user.level.emoji} + ' ' + ${user.level.label}"></span>
-</span>
+        <p><strong>이메일:</strong> <span th:text="${user.email}">email</span></p>
+        <p><strong>포인트:</strong> <span th:text="${user.point}">0</span></p>
 
+        <!-- user.level이 없을 때 안전하게 숨김 -->
+        <p th:if="${user.level != null}">
+            등급:
+            <span th:style="|color:${user.level.colorCode}|">
+                <span th:text="|${user.level.emoji} ${user.level.label}|"></span>
+            </span>
         </p>
 
         <p><strong>활동 기록 (게시글 수):</strong>
             <span th:text="${countByUser}">0</span>
         </p>
+
+        <div class="inventory-box">
+            <h2 class="use-crayon-font">INVENTORY</h2>
+
+
+            <!-- 대표 캐릭터 -->
+            <h2>파트너 프렌즈</h2>
+            <div th:if="${user.character != null}"
+                 class="main-character-box"
+                 th:classappend="| grade-${user.character.grade} bg-${user.character.code}|"
+                 th:style="${user.character.bgImagePath} != null ?
+                           |background: url(@{${user.character.bgImagePath}}) center/cover no-repeat, linear-gradient(to bottom right, #fff6f6, #e8f9f5)| :
+                           null">
+
+                <!-- 등급별 효과 적용 -->
+                <p class="character-name"
+                   th:text="${user.character.displayName}"
+                   th:classappend="| grade-${user.character.grade}|">캐릭터명</p>
+
+                <img th:src="@{${user.character.imagePath}}" width="120" alt="대표 캐릭터" />
+
+
+
+                <p class="character-badge"
+                   th:text="${user.character.grade}"
+                   th:classappend="| grade-${user.character.grade}|">SSR</p>
+            </div>
+            <div class="`sort-options`" style="margin-bottom: 15px;">
+                <a th:href="@{/mypage(sort='grade')}" class="sort-btn">등급순 정렬</a>
+                <a th:href="@{/mypage}" class="sort-btn">기본 정렬</a>
+            </div>
+
+
+            <!-- 인벤토리 -->
+            <div th:each="item : ${inventory}"
+                 class="character-slot"
+                 th:classappend="| grade-${item.characterType.grade}|">
+
+                <img th:src="@{${item.characterType.imagePath}}" width="100" alt="캐릭터" />
+
+                <p class="character-badge"
+                   th:text="${item.characterType.grade}"
+                   th:classappend="| grade-${item.characterType.grade}|">R</p>
+
+                <p class="character-name"
+                   th:text="${item.characterType.displayName}"
+                   th:classappend="| grade-${item.characterType.grade}|">이름</p>
+
+                <p th:text="|보유 수: ${item.count}|">보유 수: 0</p>
+
+                <div th:if="${user.character != null and item.characterType == user.character}">
+                    <strong style="color:#e91e63;">파트너 프렌즈!</strong>
+                </div>
+
+                <form th:if="${user.character == null or item.characterType != user.character}"
+                      th:action="@{/mypage/set-main-character}" method="post">
+                    <!-- enum을 그대로 보내는 경우 컨트롤러에서 Enum 변환 핸들링 필요 -->
+                    <input type="hidden" name="character" th:value="${item.characterType}" />
+                    <button type="submit">파트너로 설정</button>
+                </form>
+            </div>
+        </div>
 
     </div>
 

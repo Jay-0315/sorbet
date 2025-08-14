@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>캐릭터 뽑기</title>
+  <link rel="stylesheet" th:href="@{/css/gatcha.css}">
+</head>
+<body>
+<!-- 캐릭터 슬라이더 -->
+<div class="char-slider" aria-label="sorbet friends carousel">
+    <!-- 서버에서 내려주는 캐릭터 썸네일들 -->
+    <img th:each="c : ${characters}" th:src="${c.imgUrl}" th:alt="${c.name}" class="char-card">
+
+  <div class="char-slider">
+  <div class="char-track" id="charTrack">
+    <img src="/images/character/cartBear.png" alt="Cart Bear" class="char-card">
+    <img src="/images/character/chocoBear.png" alt="Choco Bear" class="char-card">
+    <img src="/images/character/heroRabit.png" alt="Hero Rabit" class="char-card">
+    <img src="/images/character/idolBird.png" alt="Idol Bird" class="char-card">
+    <img src="/images/character/magicBird.png" alt="Magic Bird" class="char-card">
+    <img src="/images/character/maRabit.png" alt="Ma Rabit" class="char-card">
+    <img src="/images/character/matsuriBird.png" alt="Matsuri Bird" class="char-card">
+    <img src="/images/character/mudangBear.png" alt="Mudang Bear" class="char-card">
+    <img src="/images/character/otterRabit.png" alt="Otter Rabit" class="char-card">
+    <img src="/images/character/penguinRabit.png" alt="P Rabit" class="char-card">
+    <img src="/images/character/sacheonBird.png" alt="Sacheon Bird" class="char-card">
+    <img src="/images/character/sakuraBird.png" alt="Sakura Bird" class="char-card">
+    <img src="/images/character/sakuraRabit.png" alt="Sakura Rabit" class="char-card">
+    <img src="/images/character/swordBear.png" alt="Sword Bear" class="char-card">
+
+  </div>
+</div>
+  </div>
+</div>
+
+<div class="gatcha-container">
+
+  <h1 class="gatcha-title use-crayon-font">✨ SORBET FRIENDS! ✨</h1>
+  <img src="/images/cardback1.png" alt="뽑기배너" class="gatcha-image"/>
+  <div th:if="${error}" class="error-message" th:text="${error}"></div>
+
+  <form th:action="@{/gatcha/draw}" method="post">
+    <button class="gatcha-button use-crayon-font" type="submit">1 DRAW!</button>
+  </form>
+  <form th:action="@{/gatcha/draw10}" method="post">
+    <button class="gatcha-button use-crayon-font" type="submit">10 DRAWS!</button>
+
+  </form>
+
+
+
+</div>
+<div>
+<a href="/home" class="home-btn use-crayon-font">HOME</a>
+</div>
+</body>
+</html>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const track = document.getElementById('charTrack');
+    if (!track) return;
+
+    const imgs = Array.from(track.querySelectorAll('img'));
+
+    const wait = img =>
+            (img.complete && img.naturalWidth > 0)
+                    ? Promise.resolve()
+                    : new Promise(res => { img.onload = img.onerror = res; });
+
+    Promise.all(imgs.map(wait)).then(() => {
+      // 1) 트랙 내부 아이템만 복제해서 2배 길이 구성
+      const originals = Array.from(track.children);
+      originals.forEach(n => track.appendChild(n.cloneNode(true)));
+
+      // 2) 원본 길이(절반 길이)를 측정
+      const halfWidth = [...originals].reduce((sum, el) => sum + el.getBoundingClientRect().width, 0)
+              + (originals.length - 1) * 16; // gap 16px 보정
+      // 3) 속도(px/s) -> 시간(ms)
+      const SPEED = 60; // 숫자 키우면 더 빠름
+      const duration = (halfWidth / SPEED) * 1000;
+
+      // 4) Web Animations API로 무한 스크롤
+      const anim = track.animate(
+              [
+                { transform: 'translateX(0)' },
+                { transform: `translateX(-${halfWidth}px)` }
+              ],
+              { duration, iterations: Infinity, easing: 'linear' }
+      );
+
+      // 호버 시 일시정지/재개 (CSS 대신 JS로 제어)
+      const slider = track.parentElement;
+      slider.addEventListener('mouseenter', () => anim.pause());
+      slider.addEventListener('mouseleave', () => anim.play());
+
+      // 리사이즈 시 거리/시간 재계산
+      let t;
+      window.addEventListener('resize', () => {
+        clearTimeout(t);
+        t = setTimeout(() => {
+          anim.cancel();
+          // 다시 측정 (이미 복제돼 있으니 half는 동일하지만 gap/스케일 변화 보정)
+          const firstHalf = [...track.children].slice(0, originals.length);
+          const newHalf = firstHalf.reduce((s, el) => s + el.getBoundingClientRect().width, 0)
+                  + (originals.length - 1) * 16;
+          const newDuration = (newHalf / SPEED) * 1000;
+          track.animate(
+                  [{ transform:'translateX(0)' }, { transform:`translateX(-${newHalf}px)` }],
+                  { duration:newDuration, iterations:Infinity, easing:'linear' }
+          );
+        }, 150);
+      });
+    });
+  });
+</script>
+
+

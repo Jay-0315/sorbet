@@ -7,6 +7,10 @@ body {
     align-items: center;
     min-height: 100vh;
     margin: 0;
+    background:
+            radial-gradient(20rem 20rem at -5% -10%, rgba(250,240,230,.9), transparent 60%),
+            radial-gradient(22rem 22rem at 110% 10%, rgba(154,215,255,.25), transparent 60%),
+            linear-gradient(180deg, #fffaf3, #fff1f1);
 }
 
 
@@ -101,3 +105,24 @@ textarea {
 .btn-submit:hover {
     background: linear-gradient(135deg, #f6b391, #e94d4d);
 }
+
+
+.btn-home {
+    display: inline-block;
+    margin-bottom: 20px;
+    background: linear-gradient(135deg, #fcd0a0, #f46c6c);
+    color: #f9f9f9;
+    font-size: 14px;
+    padding: 8px 14px;
+    border-radius: 6px;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+    font-weight: bold;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+.btn-home:hover {
+    background: linear-gradient(135deg, #f6b391, #e94d4d);
+}
+

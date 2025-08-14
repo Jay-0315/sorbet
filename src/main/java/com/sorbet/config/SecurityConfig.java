@@ -5,6 +5,7 @@ import com.sorbet.security.jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -58,9 +59,12 @@ public class SecurityConfig {
                         // 공개 접근 가능한 경로 (간단하게)
                         .requestMatchers("/", "/font/**","/home", "/register", "/login", "/logout",
                                        "/css/**", "/js/**", "/images/**", "/static/**",
-                                       "/comments", "/posts/**","/favicon.ico").permitAll()
+                                       "/comments", "/posts/**","/favicon.ico","/uploads/**").permitAll()
                         // 인증이 필요한 경로
-                        .requestMatchers("/mypage", "/createpost").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/upload-image").permitAll()
+
+
+                        .requestMatchers("/mypage", "/createpost","/gatcha/**").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
                         .requestMatchers("/admin/**").hasAuthority("ROLE_ADMIN")
                         .anyRequest().authenticated()
                 )

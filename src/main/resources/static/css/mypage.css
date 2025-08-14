@@ -1,67 +1,200 @@
-/* 기본 설정 */
 body {
-    font-family: 'Segoe UI', 'Malgun Gothic', sans-serif;
-    background-color: #FDF9F2;
     margin: 0;
-    padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-}
-.greeting-image {
-    margin-top: 20px;
-    width: 120px;
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
+    font-family: 'Segoe UI', 'Pretendard', sans-serif;
+    background:
+            radial-gradient(20rem 20rem at -5% -10%, rgba(250,240,230,.9), transparent 60%),
+            radial-gradient(22rem 22rem at 110% 10%, rgba(154,215,255,.25), transparent 60%),
+            linear-gradient(180deg, #fffaf3, #fff1f1);
+    color: #333;
 }
 
-/* 마이페이지 전체 카드 스타일 */
 .mypage-container {
-    background-color: #ffffff;
-    padding: 40px 50px;
-    border-radius: 16px;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.08);
-    width: 400px;
+    max-width: 800px;
+    margin: 30px auto;
+    padding: 30px;
+    background: #ffffff;
+    border-radius: 20px;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+}
+
+.greeting-image {
+    display: block;
+    width: 120px;
+    margin: 0 auto 20px;
+    animation: float 3s ease-in-out infinite;
+}
+@keyframes float { 0%{transform:translateY(0)} 50%{transform:translateY(-8px)} 100%{transform:translateY(0)} }
+
+h1 { text-align: center; font-size: 28px; margin-bottom: 20px; }
+
+.use-crayon-font { font-family: 'Cafe24SsurroundAir','Comic Sans MS',cursive; font-size: 24px; color:#ff80ab; margin-top: 30px; }
+
+.info-box p { font-size: 16px; margin: 10px 0; }
+
+.inventory-box { margin-top: 40px; padding-top: 20px; border-top: 2px dashed #ffcdd2; }
+
+/* 대표 캐릭터 박스 */
+.main-character-box {
+    position: relative;                /* ::before 기준 */
+    overflow: hidden;                  /* 배경/오오라 깔끔하게 */
     text-align: center;
-}
-
-/* 인사 텍스트 */
-.mypage-container h1 {
-    color: #FA8DA8;
+    background: linear-gradient(to bottom right, #fff6f6, #e8f9f5);
+    border: 2px solid #ffe5ec;
+    border-radius: 15px;
+    padding: 15px;
     margin-bottom: 30px;
-    font-size: 24px;
+    min-height: 180px;                 /* 배경이 보이도록 높이 확보(필요시 조정) */
 }
 
-/* 유저 정보 영역 */
-.info-box {
-    background-color: #fff6f6;
-    padding: 20px;
-    border-radius: 10px;
-    border: 1px solid #fcd0a0;
-    text-align: left;
-    font-size: 15px;
-    line-height: 1.8;
-    margin-bottom: 25px;
+/* 캐릭터별 배경 (정적 리소스는 /images/ 로 접근) */
+.main-character-box.bg-sakuraRabbit {
+    background:
+            url('/images/bg/sakuraDisplay.png') center/cover no-repeat,
+            linear-gradient(to bottom right, #fff6f6, #e8f9f5);
+}
+.main-character-box.bg-mudangBear {
+    background:
+            url('/images/bg/sakuraDisplay.png') center/cover no-repeat,
+            linear-gradient(to bottom right, #fff6f6, #e8f9f5);
+}
+.main-character-box.bg-sacheonBird {
+    background:
+            url('/images/bg/maDisplay.png') center/cover no-repeat,
+            linear-gradient(to bottom right, #fff6f6, #e8f9f5);
+}
+.main-character-box.bg-maRabit {
+    background:
+            url('/images/bg/maDisplay.png') center/cover no-repeat,   /* ← 오타 수정 */
+            linear-gradient(to bottom right, #fff6f6, #e8f9f5);
 }
 
-.info-box p {
-    margin: 8px 0;
+/* SSR 오오라(선택) */
+.main-character-box.grade-SSR::before{
+    content:""; position:absolute; inset:-18%; z-index:0; border-radius:24px;
+    background: radial-gradient(50% 50% at 50% 40%, rgba(255,215,0,.35), transparent 60%);
+    filter: blur(14px);
 }
+.main-character-box > * { position: relative; z-index: 1; } /* 내용 위로 */
 
-/* 홈 버튼 */
-.home-btn {
+.character-slot {
+    position: relative;                /* 배지 absolute 기준 */
     display: inline-block;
+    text-align: center;
+    margin: 10px;
+    padding: 10px;
+    border-radius: 12px;
+    background: linear-gradient(to bottom right, #fff6f6, #e8f9f5);
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    transition: transform 0.3s;
+}
+.character-slot:hover { transform: scale(1.05); }
+
+/* 버튼 가로 가운데 - 쉼표 추가 */
+.character-slot form,
+.character-slot button { width: 100%; }
+.character-slot button{
+    display: inline-block;
+    width: auto;        /* 꽉 차게 하려면 100% */
+    align-self: center;
+    margin-top: 8px;
+    padding: 5px 10px;
+    border: none;
+    background-color: #f06292;
+    color: white;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 13px;
+    transition: background 0.3s;
+}
+.character-slot button:hover {
+    background: linear-gradient(to bottom right, #fff6f6, #e8f9f5);
+}
+
+.character-slot img{
+    display: block;
+    width: 100px;
+    height: auto;
+    margin: 22px auto 6px;
+    border-radius: 50%;
+    border: 2px solid #f8bbd0;
+}
+.sort-btn{
+    display: inline-block;
+    margin: 30px auto 0;
+    padding: 10px 20px;
+    font-size: 15px;
     background: linear-gradient(135deg, #fcd0a0, #f46c6c);
     color: white;
-    font-weight: bold;
+    border: none;
+    border-radius: 12px;
+    text-align: center;
     text-decoration: none;
-    padding: 12px 20px;
-    border-radius: 6px;
-    transition: background-color 0.3s ease;
+    transition: background 0.3s;
+}
+.sort-btn:hover{ background:linear-gradient(135deg,#f6b391,#e94d4d); }
+
+.home-btn {
+    display: block;
+    margin: 30px auto 0;
+    padding: 10px 20px;
+    font-size: 15px;
+    background: linear-gradient(135deg, #fcd0a0, #f46c6c);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    text-align: center;
+    text-decoration: none;
+    transition: background 0.3s;
+}
+.home-btn:hover { background: linear-gradient(135deg, #fce3c0, #f78c8c); }
+
+/* 이름/배지 기본 */
+.character-name{
+    font-weight: 800; font-size: 16px; margin: 6px 0 2px; text-align: center;
+}
+.character-badge{
+    position: absolute; top: 8px; right: 8px; z-index: 1;
+    padding: 2px 10px; border-radius: 999px; font-size: 12px; font-weight: 700;
+    color: #f9f9f9; background: #bbb;
 }
 
-.home-btn:hover {
-    background: linear-gradient(135deg, #f6b391, #e94d4d);
+/* 등급별 텍스트 반짝임 */
+.character-name.grade-SSR{
+    background: linear-gradient(90deg, #FFD700, #FFF3B0, #FFD700);
+    background-size: 200% auto;
+    color: transparent; -webkit-background-clip: text; background-clip: text;
+    animation: shineGold 2.2s linear infinite;
+}
+.character-name.grade-SR{
+    background: linear-gradient(90deg, #A770EF, #CF8BF3, #A770EF);
+    background-size: 200% auto;
+    color: transparent; -webkit-background-clip: text; background-clip: text;
+    animation: shinePurple 2.2s linear infinite;
+}
+.character-name.grade-R{ color:#ff7043; }
+
+/* 배지 색상 */
+.character-badge.grade-SSR{ background:#f6c11b; color:#3a2a00; }
+.character-badge.grade-SR { background:#8e5ad9; }
+.character-badge.grade-R  { background:#ff8a65; }
+
+/* 슬롯 오오라(선택) */
+.character-slot.grade-SSR::before{
+    content:""; position:absolute; inset:-6px; border-radius:14px;
+    background: radial-gradient(60% 60% at 50% 40%, rgba(255,215,0,.35), transparent 60%);
+    filter: blur(8px); z-index:-1;
+}
+.character-slot.grade-SR::before{
+    content:""; position:absolute; inset:-6px; border-radius:14px;
+    background: radial-gradient(60% 60% at 50% 40%, rgba(167,112,239,.35), transparent 60%);
+    filter: blur(8px); z-index:-1;
+}
+
+/* 애니메이션 */
+@keyframes shineGold{ 0%{background-position:0% center} 100%{background-position:200% center} }
+@keyframes shinePurple{ 0%{background-position:0% center} 100%{background-position:200% center} }
+
+/* 접근성 */
+@media (prefers-reduced-motion: reduce){
+    .character-name.grade-SSR, .character-name.grade-SR{ animation:none !important; }
 }

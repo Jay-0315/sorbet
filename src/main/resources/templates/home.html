@@ -10,6 +10,7 @@
 <sec:authorize access="isAuthenticated()">
   <div class="user-menu-fixed">
     <a href="/mypage" class="user-btn1">마이페이지</a>
+    <a href="/gatcha" class="user-btn3">sorbet friends!</a>
     <form th:action="@{/logout}" method="post" style="display:inline">
       <button type="submit" class="user-btn2">로그아웃</button>
     </form>
@@ -17,77 +18,61 @@
 </sec:authorize>
 
 
-<div class="sorbet-logo">Sorbet.</div>
-<h1 class="main-title">뭐든지 묻고, 답하세요 Sorbet, Solve at</h1>
+<div class="sorbet-logo">SORBET.</div>
+
 <form th:action="@{/home}" method="get" class="search-form">
   <input type="text" name="keyword" th:value="${searchKeyword}" placeholder="검색어 입력">
-  <button type="submit" class="search-btn">🔍검색</button>
+  <button type="submit" class="search-btn">SEARCH</button>
 </form>
 
 <sec:authorize access="isAuthenticated()">
-  <p class="user-greeting" th:if="${nickname}" th:text="'안녕하세요, ' + ${nickname} + '님!'"></p>
 </sec:authorize>
 
-
-
-
-
-  <div class="layout">
-  <div class="sidebar">
-    <h2>카테고리</h2>
-
-
-    <button class="nav-btn"
-            data-category="all"
+<!-- NEW: 그리드형 게시판 -->
+<div class="board-wrap">
+  <!-- 가로 카테고리 필터 -->
+  <div class="filters">
+    <button class="filter-btn" data-category="all"
             th:classappend="${selectedCategory} == 'all' ? ' active' : ''">전체</button>
-
-    <button class="nav-btn"
-            data-category="love"
+    <button class="filter-btn" data-category="love"
             th:classappend="${selectedCategory} == 'love' ? ' active' : ''">연애</button>
-
-    <button class="nav-btn"
-            data-category="friend"
+    <button class="filter-btn" data-category="friend"
             th:classappend="${selectedCategory} == 'friend' ? ' active' : ''">친구</button>
-
-    <button class="nav-btn"
-            data-category="life"
+    <button class="filter-btn" data-category="life"
             th:classappend="${selectedCategory} == 'life' ? ' active' : ''">인생</button>
-
-    <button class="nav-btn"
-            data-category="etc"
+    <button class="filter-btn" data-category="etc"
             th:classappend="${selectedCategory} == 'etc' ? ' active' : ''">기타</button>
-
-    <img src="/images/runningRabits.png" alt="달리는 토끼" class="sidebar-image"/>
+  </div>
+  <div>
+    <p class="user-greeting" th:if="${nickname}" th:text="'안녕하세요, ' + ${nickname} + '님!'"></p>
   </div>
 
-  <div class="content">
-    <div th:if="${posts != null and posts.isEmpty()}">
-      <p>등록된 글이 없습니다.</p>
-    </div>
-
-
-    <div th:each="post : ${posts}" class="post-box">
-      <div class="post-header">
-        <div>
-      <div class="category" th:text="${post.category}">카테고리</div>
-
-      <a class="post-title" th:href="@{|/posts/${post.id}|}" th:text="${post.title}">제목</a>
-
-      <p class="writer" th:text="'🐰작성자: ' + ${post.writer}">작성자</p>
+  <!-- 카드 그리드 -->
+  <div class="grid-cards" th:if="${posts != null}">
+    <a class="card" th:each="post : ${posts}" th:href="@{|/posts/${post.id}|}">
+      <div class="thumb">
+        <img th:if="${post.thumbnailUrl != null}" th:src="${post.thumbnailUrl}" alt="thumbnail">
+        <div class="thumb--placeholder" th:if="${post.thumbnailUrl == null}">SORBET</div>
+        <span class="chip" th:text="${post.category}">카테고리</span>
+      </div>
+      <div class="card-body">
+        <h3 class="card-title" th:text="${post.title}">제목</h3>
+        <div class="meta">
+          <span th:text="${#temporals.format(post.createdAt, 'yyyy.MM.dd')}">2025.08.12</span>
+          <span class="dot">·</span>
+          <span th:text="'조회 ' + ${post.views}">조회 0</span>
+          <span class="dot">·</span>
+          <span th:text="'좋아요 ' + ${post.likeCount}">좋아요 0</span>
         </div>
-
-      <img th:if="${post.thumbnailUrl != null}" th:src="${post.thumbnailUrl}" class="thumbnail" />
       </div>
-      <!-- 오른쪽 하단 메타 정보 -->
-      <div class="footer-meta">
-        <span class="viewCount" th:text="'조회수: ' + ${post.views}">조회수</span>
-        <span class="likeCount" th:text="'좋아요: ' + ${post.likeCount}">좋아요</span>
-        <span class="date" th:text="'작성일자: ' + ${#temporals.format(post.createdAt, 'yyyy-MM-dd HH:mm')}">날짜</span>
-      </div>
-    </div>
+    </a>
+  </div>
 
+  <div th:if="${posts == null or posts.isEmpty()}" class="empty">
+    등록된 글이 없습니다.
   </div>
 </div>
+
 <!-- 페이징 -->
 <div class="pagination" th:if="${totalPages > 1}">
   <span th:if="${currentPage > 0}">
@@ -105,19 +90,15 @@
   </span>
 </div>
 
-  <a href="/createpost" class="btn-write">글쓰기</a>
+<a href="/createpost" class="btn-write">글쓰기</a>
 
 <script>
-  document.addEventListener('DOMContentLoaded', function () {
-    const navButtons = document.querySelectorAll('.nav-btn');
-    navButtons.forEach(button => {
-      button.addEventListener('click', function () {
-        const category = this.dataset.category;
-        if (category === 'all') {
-          window.location.href = '/home';
-        } else {
-          window.location.href = '/home?category=' + category;
-        }
+  document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const c = btn.dataset.category;
+        if (c === 'all') location.href = '/home';
+        else location.href = '/home?category=' + c;
       });
     });
   });

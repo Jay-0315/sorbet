@@ -1,0 +1,160 @@
+/* ========== Gatcha Result: Final CSS ========== */
+
+/* Fonts */
+@font-face {
+    font-family: 'Crayon';
+    src: url('/font/Crayon.ttf') format('truetype');
+}
+.use-crayon-font { font-family: 'Crayon', sans-serif; }
+
+/* Layout */
+.card-container{
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    height:100vh; gap:20px;
+}
+
+/* Buttons */
+.btn-box{ margin-top:100px; }
+.btn-box a, .more-btn a{
+    display:inline-block; margin:10px 10px; padding:12px 24px;
+    font-size:1em; font-weight:bold; color:#fff; background:#ffb74d;
+    border-radius:10px; text-decoration:none;
+    box-shadow:2px 3px 6px rgba(0,0,0,0.2);
+    transition: background-color .3s ease, transform .2s ease;
+}
+.btn-box a:hover, .more-btn a:hover{ background:#ffa726; transform:scale(1.05); }
+
+/* Page background (by grade) */
+body{
+    font-family:'Arial',sans-serif;
+    margin:0; padding:0; display:flex; height:100vh;
+    justify-content:center; align-items:center;
+    background:#fffbe9; transition: background-color .5s;
+}
+body.grade-R{
+    background: linear-gradient(to top, #f7f1e3, #ffffff);
+}
+body.grade-SR{
+    background:
+            radial-gradient(60% 50% at 50% 30%, #f4ecff 0%, #ffffff 60%) fixed,
+            linear-gradient(135deg, #ead9ff 0%, #e8f9f5 100%);
+}
+body.grade-SSR{
+    background:
+            radial-gradient(60% 50% at 50% 30%, #fff6d8 0%, #ffffff 60%) fixed,
+            linear-gradient(135deg, #fff8e1 0%, #ffe0f0 100%);
+}
+
+/* Flip Card */
+.card-flip{
+    perspective:1000px;
+    width:300px; height:450px;           /* front/back와 높이 통일 */
+    position:relative; isolation:isolate; /* glow 레이어 분리 */
+}
+.card-inner{
+    position:relative; width:100%; height:100%;
+    transform-style:preserve-3d; transition: transform 1s ease;
+}
+.card-flip.flipped .card-inner{ transform: rotateY(180deg); }
+
+.card-front, .card-back{
+    position:absolute; width:300px; height:450px;
+    backface-visibility:hidden; border-radius:20px; overflow:hidden;
+    box-shadow:0 8px 20px rgba(0,0,0,0.1);
+}
+.card-front{ background:url('/images/cardback.png') center/cover no-repeat; }
+.card-back{
+    background:#fff; transform: rotateY(180deg);
+    padding:30px 20px; box-sizing:border-box; text-align:center;
+    animation: fadeInUp .8s ease-out;
+}
+
+.card-back h1{
+    font-size:1.6em; color:#ff4081; margin-bottom:10px;
+}
+.card-back p{
+    font-size:1.2em; font-weight:bold; margin-bottom:10px; color:#ff7043;
+}
+.card-back img{
+    width:180px; height:auto; border-radius:12px; margin:15px 0;
+    animation: fadeInPop 1s ease, imgGlow 1.8s ease-in-out infinite alternate;
+}
+
+/* === Grade Glows === */
+/* 카드 뒤 오오라 */
+.card-flip::before{
+    content:""; position:absolute; inset:-24px; border-radius:28px;
+    filter: blur(14px); opacity:.85; z-index:-1; pointer-events:none;
+    transform: translateZ(0); animation: auraPulse 2.2s ease-in-out infinite alternate;
+}
+/* SSR = Gold Aura */
+body.grade-SSR .card-flip::before{
+    background:
+            radial-gradient(60% 60% at 50% 40%, rgba(255,215,0,.55), transparent 60%),
+            radial-gradient(70% 70% at 50% 60%, rgba(255,196,0,.35), transparent 70%),
+            conic-gradient(from 0deg, rgba(255,230,120,.5), rgba(255,210,20,.6), rgba(255,230,120,.5));
+}
+/* SR = Purple Aura */
+body.grade-SR .card-flip::before{
+    background:
+            radial-gradient(60% 60% at 50% 40%, rgba(186,85,211,.55), transparent 60%),
+            radial-gradient(70% 70% at 50% 60%, rgba(150,90,255,.35), transparent 70%),
+            conic-gradient(from 0deg, rgba(210,160,255,.5), rgba(150,90,255,.6), rgba(210,160,255,.5));
+}
+
+/* 이미지 글로우 색상 (SSR/ SR) */
+body.grade-SSR .card-back img{
+    box-shadow:
+            0 0 14px rgba(255,215,0,.65),
+            0 0 28px rgba(255,200,0,.45),
+            0 0 42px rgba(255,180,0,.35);
+}
+body.grade-SR .card-back img{
+    box-shadow:
+            0 0 14px rgba(186,85,211,.65),
+            0 0 28px rgba(150,90,255,.45),
+            0 0 42px rgba(120,70,220,.35);
+}
+
+/* Multi Gatcha (optional) */
+.multi-gatcha-container{ padding:30px; text-align:center; }
+.card-grid{
+    display:grid; grid-template-columns:repeat(auto-fill, minmax(120px,1fr));
+    gap:20px; justify-items:center; margin:30px auto; max-width:800px;
+}
+.card-wrapper{
+    padding:15px; border-radius:12px; background:#fff;
+    box-shadow:0 2px 10px rgba(0,0,0,0.1);
+    transition: transform .3s ease; text-align:center;
+}
+.card-wrapper:hover{ transform:scale(1.05); }
+
+/* Links on card-back */
+.card-back a{
+    display:inline-block; margin:10px 8px; padding:10px 20px; font-size:1em;
+    border-radius:10px; text-decoration:none; transition: all .3s ease;
+}
+a.use-crayon-font{
+    background:#ffb74d; color:#fff;
+    box-shadow:2px 3px 8px rgba(0,0,0,0.1);
+}
+a.use-crayon-font:hover{ background:#ffa726; transform:scale(1.05); }
+a[href="/mypage"]{ background:#b2dfdb; color:#333; }
+a[href="/mypage"]:hover{ background:#80cbc4; }
+
+/* Animations */
+@keyframes auraPulse{
+    0%{ filter:blur(12px) brightness(1.0); transform:scale(.98); }
+    100%{ filter:blur(16px) brightness(1.12); transform:scale(1.02); }
+}
+@keyframes imgGlow{
+    0%{ filter:brightness(1.0) saturate(1.0); }
+    100%{ filter:brightness(1.12) saturate(1.1); }
+}
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce){
+    .card-flip::before, .card-back img { animation: none !important; }
+}
+
+

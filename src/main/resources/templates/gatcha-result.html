@@ -1,0 +1,27 @@
+<!-- gatcha-result.html -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>뽑기 결과</title>
+    <link rel="stylesheet" th:href="@{/css/gatcha-result.css}">
+</head>
+<body th:class="'grade-' + ${result.grade}">
+<div class="card-container">
+    <div class="card-flip" onclick="this.classList.toggle('flipped')">
+        <div class="card-inner">
+            <div class="card-front"></div>
+            <div class="card-back">
+                <p th:text="'등급 ' + ${result.grade}"></p>
+                <img th:src="@{${result.imagePath}}" th:alt="${result.displayName}" />
+                <p th:text="${result.displayName}"></p>
+            </div>
+        </div>
+    </div>
+
+    <div class="btn-box">
+        <a class="use-crayon-font" href="/gatcha">ONE MORE</a>
+        <a class="use-crayon-font" href="/mypage">INVENTORY</a>
+    </div>
+</div>
+</body>
+</html>

@@ -8,6 +8,9 @@ import jakarta.persistence.*;
 import lombok.*;
 import com.sorbet.domain.Role;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Getter @Setter
 @NoArgsConstructor
@@ -38,8 +41,12 @@ public class User{
 
     // User.java
     @Enumerated(EnumType.STRING)
+    @Column(name = "character_type")
     private CharacterType character;
 
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<UserCharacterInventory> inventory = new ArrayList<>();
 
 
     @Enumerated(EnumType.STRING)

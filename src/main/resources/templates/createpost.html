@@ -17,7 +17,7 @@
   <form class="form-box" th:action="@{/createpost}" method="post" th:object="${post}" onsubmit="return submitContents();">
 
     <img src="/images/writingRabits.png" alt="끄적토끼" class="writing-image"/>
-    <h1 class="use-crayon-font">Tell us your story.</h1>
+    <h1 class="use-crayon-font">TELL US YOUR STORY.</h1>
 
     <div class="form-group">
       <label th:for="*{title}">제목</label>
@@ -53,53 +53,70 @@
     <div id="editor" style="height: 400px;"></div>
 
     <script>
-      var quill = new Quill('#editor', {
+      const quill = new Quill('#editor', {
+        theme: 'snow',
         modules: {
-          toolbar: {
-            container: '#toolbar',  // 🔸 DOM에 존재하는 toolbar 연결
-            handlers: {
-              image: imageHandler
-            }
-          }
-        },
-        theme: 'snow'
+          toolbar: { container: '#toolbar', handlers: { image: imageHandler } }
+        }
       });
 
-      function imageHandler() {
+      async function imageHandler() {
         const input = document.createElement('input');
-        input.setAttribute('type', 'file');
-        input.setAttribute('accept', 'image/*');
+        input.type = 'file';
+        input.accept = 'image/*';
         input.click();
 
         input.onchange = async () => {
-          const file = input.files[0];
+          const file = input.files?.[0];
           if (!file) return;
 
-          const formData = new FormData();
-          formData.append('image', file);
+          // (옵션) 클라이언트에서 10MB 제한
+          if (file.size > 10 * 1024 * 1024) {
+            alert('이미지는 10MB 이하로 업로드해주세요.');
+            return;
+          }
 
-          const res = await fetch('/upload-image', {
-            method: 'POST',
-            body: formData
-          });
+          const form = new FormData();
+          form.append('image', file); // 백엔드 @RequestParam("image")
 
-          const data = await res.json();
-          const range = quill.getSelection();
-          quill.insertEmbed(range.index, 'image', data.url);
+          // CSRF 토큰을 쓰는 경우(Thymeleaf라면 보통 meta에 심어둠)
+          const csrfToken = document.querySelector('meta[name="_csrf"]')?.content;
+          const csrfHeader = document.querySelector('meta[name="_csrf_header"]')?.content;
+
+          const headers = {};
+          if (csrfToken && csrfHeader) headers[csrfHeader] = csrfToken;
+
+          // JWT 쓰는 경우
+          // headers['Authorization'] = 'Bearer ' + localStorage.getItem('sorbet-token');
+
+          try {
+            const res = await fetch('/upload-image', {
+              method: 'POST',
+              body: form,
+              headers,              // CSRF/JWT 필요시만 유효
+              // credentials: 'include' // 세션/쿠키 쓸 때
+            });
+            if (!res.ok) throw new Error('서버 응답 오류');
+
+            const data = await res.json(); // { url: "https://.../uploads/xxx.png" }
+            const range = quill.getSelection(true);
+            quill.insertEmbed(range.index, 'image', data.url, 'user');
+            quill.setSelection(range.index + 1, 'silent');
+          } catch (e) {
+            console.error(e);
+            alert('이미지 업로드 실패: ' + (e.message ?? ''));
+          }
         };
       }
 
-      // ✅ 여기 아래에 추가!
+      // 전송시 HTML 저장
       function submitContents() {
         const html = quill.root.innerHTML;
         document.getElementById('hiddenContent').value = html;
-
-        // (선택) 빈 내용 제출 방지
         if (quill.getText().trim().length === 0) {
-          alert("본문 내용을 입력해주세요.");
+          alert('본문 내용을 입력해주세요.');
           return false;
         }
-
         return true;
       }
     </script>
@@ -129,6 +146,8 @@
     </div>
 
     <button type="submit" class="btn-submit">등록하기</button>
+    <a href="/" class="btn-home">← 홈으로 돌아가기</a>
+
     <!-- 숨겨진 필드: HTML 내용 저장 -->
     <input type="hidden" name="content" id="hiddenContent">
 
